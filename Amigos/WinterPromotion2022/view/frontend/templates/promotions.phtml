@@ -1,0 +1,94 @@
+<?php
+    /** @var \Amigos\WinterPromotion2022\Block\CategoryPromotions $block */
+
+    /** @var \Magento\Catalog\Model\Category $summerCategory */
+    $category_1 = $block->getDefaultValue('winter_promotions_section/winter_promotions_general/category_1');
+    $category_2 = $block->getDefaultValue('winter_promotions_section/winter_promotions_general/category_2');
+    $category_3 = $block->getDefaultValue('winter_promotions_section/winter_promotions_general/category_3');
+    $productIds = $block->getDefaultValue('winter_promotions_section/winter_promotions_general/product_ids');
+
+    $summerCategory = $block->getCategoryById($category_1);
+    $springCategory = $block->getCategoryById($category_2);
+    $teeCategory = $block->getCategoryById($category_3);
+
+//    var_dump($category);
+?>
+<section class="u-clearfix u-white u-section-1" id="sec-53d8">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-expanded-width u-palette-4-base u-shape u-shape-rectangle u-shape-1"></div>
+        <img alt="" class="u-image u-image-default u-image-1" src="<?php echo $summerCategory->getImageUrl(); ?>">
+        <div class="u-align-left u-container-style u-expanded-width-xs u-group u-similar-fill u-group-1">
+            <div class="u-container-layout u-container-layout-1">
+                <h3 class="u-custom-font u-text u-text-font u-text-1"><?= __('fashion news') ?></h3>
+                <h1 class="u-text u-text-2"><?= __($summerCategory->getName()) ?></h1>
+                <p class="u-text u-text-font u-text-3"><?= __($summerCategory->getDescription()) ?></p>
+                <a class="u-btn u-button-style u-btn-1"
+                   href="<?php echo $summerCategory->getUrl(); ?>"><?= __('show more') ?></a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="u-clearfix u-white u-section-2" id="sec-988b">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <img alt="" class="u-image u-image-default u-image-1" src="<?php echo $springCategory->getImageUrl(); ?>">
+        <div class="u-align-left-sm u-align-left-xs u-container-style u-expanded-width-xs u-grey-light-3 u-group u-group-1">
+            <div class="u-container-layout u-valign-middle-lg u-valign-middle-md u-container-layout-1">
+                <div class="u-border-1 u-border-black u-hidden-xs u-line u-line-horizontal u-line-1"></div>
+                <h2 class="u-heading-font u-text u-text-1"><?= __($springCategory->getName()) ?></h2>
+                <p class="u-text u-text-font u-text-2"><?= __($springCategory->getDescription()) ?></p>
+                <a class="u-btn u-button-style u-btn-1"
+                   href="<?php echo $springCategory->getUrl(); ?>"><?= __('View collection') ?></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="u-clearfix u-white u-section-3" id="sec-5310">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-align-left u-container-style u-group u-similar-fill u-group-1">
+            <div class="u-container-layout u-container-layout-1">
+                <h2 class="u-heading-font u-text u-text-1"><?= __('Latest Products') ?></h2>
+            </div>
+        </div>
+
+        <?php
+        $ids = explode(',', $productIds);
+        if(is_array($ids)){
+            $products =  $block->getProductsByIds($ids);
+            /** @var \Magento\Catalog\Model\Product $product */
+            $count = 1;
+            foreach ($products as $product) {
+                $imageUrl = $block->getProductImage($product, 492, 368);
+                ?>
+
+                <div class="u-container-style u-expanded-width-xs u-group u-group-<?php echo $count+1 ?>">
+                    <div class="u-container-layout">
+                        <div class="u-palette-4-base u-shape u-shape-rectangle u-shape-<?php echo $count ?>"></div>
+                        <a href="<?php echo $product->getProductUrl() ?>">
+                            <img class="u-image u-image-<?php echo $count ?>" src="<?php echo $imageUrl; ?>">
+                            <h4 class="u-expanded-width-xs u-text u-text-grey-dark-1 u-text-2"><?php echo $product->getName() ?></h4>
+                        </a>
+                    </div>
+                </div>
+        <?php
+                $count++;
+            }
+        }
+
+        ?>
+    </div>
+</section>
+<section class="u-clearfix u-white u-section-4" id="sec-2a7f">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-palette-4-base u-shape u-shape-rectangle u-shape-1"></div>
+        <img alt="" class="u-image u-image-default u-image-1" src="<?php echo $teeCategory->getImageUrl(); ?>">
+        <div class="u-align-left u-container-style u-group u-similar-fill u-group-1">
+            <div class="u-container-layout u-container-layout-1">
+                <h1 class="u-text u-text-1"><?= __($teeCategory->getName()) ?></h1>
+                <p class="u-text u-text-font u-text-2"><?= __($teeCategory->getDescription()) ?></p>
+                <a class="u-btn u-button-style u-btn-1"
+                   href="<?php echo $teeCategory->getUrl(); ?>"><?= __('show more') ?></a>
+            </div>
+        </div>
+    </div>
+</section>

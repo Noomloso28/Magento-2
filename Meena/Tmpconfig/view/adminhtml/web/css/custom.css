@@ -1,0 +1,12 @@
+
+/*
+Disabled Button form upload
+ */
+.tmpconfig-template-index  .file-uploader-area  input[type="file"] + label.file-uploader-button{
+
+    display:  none;
+}
+
+.tmpconfig-template-index  .image-uploader .image.image-placeholder{
+    display:  none;
+}

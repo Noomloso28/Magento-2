@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Boxes_Pickcolor::menu"
+             title="Boxe tools by Noom"
+             module="Boxes_Pickcolor"
+             sortOrder="20"
+             resource="Magento_Backend::content"
+        />
+
+        <!-- START: new node -->
+        <add id="Boxes_Pickcolor::menu_item"
+             title="Color Picker"
+             module="Boxes_Pickcolor"
+             sortOrder="2"
+             parent="Boxes_Pickcolor::menu"
+             action="boxescolor/color/index"
+             resource="Boxes_Pickcolor::menu_item"
+        />
+
+        <add
+            id="Boxes_Pickcolor::session"
+            title="Session Manger"
+            translate="title"
+            module="Boxes_Pickcolor"
+            resource="Boxes_Pickcolor::session"
+            parent="Boxes_Pickcolor::menu"
+            action="boxescolor/color/session"
+            sortOrder="3"
+        />
+
+        <!-- END:   new node -->
+
+    </menu>
+</config>

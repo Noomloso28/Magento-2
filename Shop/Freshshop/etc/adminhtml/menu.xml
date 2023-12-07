@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+           <!--add id="Shop_Freshshop::first_level_fresh_shop"
+                title="Fresh shop Admin Menu"
+                module="Shop_Freshshop"
+                sortOrder="20"
+                resource="Magento_Backend::content" />
+
+            <add id="Shop_Freshshop::second_level_fresh_shop"
+                title="Template Configs"
+                module="Shop_Freshshop"
+                sortOrder="1"
+                action="menuitem/index/index"
+                parent="Shop_Freshshop::first_level_fresh_shop"
+                resource="Magento_Backend::content" />
+
+            <add id="Shop_Freshshop::hello"
+                 title="Hello World"
+                 module="Shop_Freshshop"
+                 sortOrder="2"
+                 action="freshshop/index/index"
+                 parent="Shop_Freshshop::first_level_fresh_shop"
+                 resource="Shop_Freshshop::Index"/-->
+
+        <add id="Shop_Freshshop::menu"
+             title="Fresh shop Admin Menu"
+             module="Shop_Freshshop"
+             sortOrder="20"
+             resource="Magento_Backend::content"
+        />
+        <!-- START: new node -->
+        <!--add id="Shop_Freshshop::menu_item"
+             title="Bss Items" module="Shop_Freshshop"
+             sortOrder="3" parent="Shop_Freshshop::first_level_fresh_shop"
+             action="freshshop/create/index"
+             resource="Shop_Freshshop::menu_item"/-->
+        <!-- END:   new node -->
+
+        <!-- START: new node -->
+        <add id="Shop_Freshshop::menu_item"
+             title="Template Configs"
+             module="Shop_Freshshop"
+             sortOrder="2"
+             parent="Shop_Freshshop::menu"
+             action="freshshop/create/index"
+             resource="Shop_Freshshop::menu_item"
+        />
+        <!-- END:   new node -->
+
+    </menu>
+</config>

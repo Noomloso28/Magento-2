@@ -1,0 +1,52 @@
+<?php
+
+/** @var \techiz\BannerSlider\Block\Widget\BannerSlider $block */
+$banners = $block->getBanners();
+?>
+<?php if ($banners->getSize()): ?>
+    <div class="owl-carousel brand-slider">
+        <?php foreach ($banners as $banner): ?>
+            <div class="item">
+                <?php if ($banner->getUrl()): ?>
+                    <a href="<?= $banner->getUrl(); ?>" title="<?= $banner->getName(); ?>" target="_blank">
+                <?php endif; ?>
+                <img src="<?= $banner->getImageUrl(); ?>" alt="<?= $banner->getName(); ?>" width="100%"/>
+                <?php if ($banner->getUrl()): ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <script type="text/javascript">
+        require(['jquery', 'owlcarousel'], function($) {
+            $('.brand-slider').owlCarousel({
+                responsive:{
+                    0:{
+                        items:2
+                    },
+                    480:{
+                        items:3
+                    },
+                    768:{
+                        items:4
+                    },
+                    992:{
+                        items:5
+                    },
+                    1200:{
+                        items:6
+                    }
+                },
+                autoplay:false,
+                loop:true,
+                nav : true,
+                dots: false,
+                autoplaySpeed : 500,
+                navSpeed : 500,
+                dotsSpeed : 500,
+                autoplayHoverPause: true,
+                margin:30
+            });
+        });
+    </script>
+<?php endif; ?>

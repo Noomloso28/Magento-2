@@ -1,0 +1,61 @@
+Counter Phtml
+
+<div class="container well" style="margin-top:150px;">
+    <h2>Count up</h2>
+    <div class='demo-1'><?php echo rand( 1000000000, 10000000000000); ?></div>
+    <h2>Count down</h2>
+    <div class='demo-2' data-start='1000' data-end='0'></div>
+    <h2>Clocks</h2>
+    <h3 class='timer element'></h3>
+    <hr>
+    <h3 class='timer2 element'></h3>
+    <hr>
+    <h3 class='timer3 element'></h3>
+</div>
+
+
+<script>
+    require([
+        'jquery',
+        'countid'
+    ], function($, countid){
+        'use strict'
+        $(function() {
+            $(".demo-1,.demo-2").countid();
+
+            Date.prototype.addSeconds = function(h) {
+                this.setSeconds(this.getSeconds() + h);
+                return this;
+            }
+            var date = new Date().addSeconds(5) / 1000
+            $('.timer').countid({
+                clock: true,
+                dateTime: date,
+                dateTplRemaining: "%S seconds to complete timer",
+                dateTplElapsed: "%S seconds elapsed since the timer completion",
+                complete: function(el) {
+                    el.css({
+                        'color': 'red'
+                    })
+                }
+            })
+            $('.timer2').countid({
+                clock: true,
+                dateTime: date,
+                dateTplRemaining: "%H:%M:%S",
+                dateTplElapsed: "%H:%M:%S",
+                complete: function(el) {
+                    el.animate({
+                        'font-size': '50px'
+                    })
+                }
+            })
+            $('.timer3').countid({
+                clock: true,
+                dateTime: '01/01/1993',
+                dateTplElapsed: "%Y years<br>%O months<br>%D days<br>%H hours<br>%M minutes<br>%S seconds<br> since establishing Slovak Republic",
+            })
+        });
+    });
+</script>
+

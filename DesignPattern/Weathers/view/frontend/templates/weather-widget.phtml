@@ -1,0 +1,17 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<div id="weather-widget" data-bind="scope: 'weather-widget'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "#weather-widget": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "weather-widget": {
+                        "component": "DesignPattern_Weathers/js/weather-widget"
+                    }
+                }
+            }
+        }
+    }
+</script>

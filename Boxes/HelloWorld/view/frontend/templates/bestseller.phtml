@@ -1,0 +1,17 @@
+<h2>Welcome to Bestseller Page </h2>
+
+
+<?php
+
+$collection = $block->getProductCollection();
+foreach ($collection as $_product)
+{
+
+    echo '<pre>';
+    print_r( $_product );
+    echo '</pre>';
+
+    //echo $_product->getName() . ' - ' . $_product->getProductUrl() . '<br />';
+}
+
+?>

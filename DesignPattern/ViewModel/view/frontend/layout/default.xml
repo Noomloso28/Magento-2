@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="default_head_blocks"/>
+    <body>
+        <referenceContainer name="footer-container">
+            <container name="footer.viewmodel" htmlTag="div" htmlClass="footer-viewmodel">
+                <block name="footer.viewmodel.content" template="DesignPattern_ViewModel::viewModelContent.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">DesignPattern\ViewModel\ViewModel\ProductProvider</argument>
+                        <argument name="view_product" xsi:type="object">DesignPattern\ViewModel\ViewModel\ProductCollecttion</argument>
+                        <argument name="view_type" xsi:type="object">DesignPattern\ViewModel\Model\VirtualType</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

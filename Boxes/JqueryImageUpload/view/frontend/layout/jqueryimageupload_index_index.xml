@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Boxes_JqueryImageUpload::css/bootstrap-imageupload.css"/>
+        <css src="Boxes_JqueryImageUpload::css/bootstrap.min.css"/>
+    </head>
+
+    <referenceContainer name="content">
+        <block class="Boxes\JqueryImageUpload\Block\Index" name="jqueryimageupload_index_index" template="Boxes_JqueryImageUpload::index.phtml" />
+    </referenceContainer>
+</page>

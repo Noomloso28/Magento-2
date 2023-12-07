@@ -1,0 +1,50 @@
+<?php
+
+/** @var \techiz\BannerSlider\Block\Widget\BannerSlider $block */
+$banners = $block->getBanners();
+?>
+
+<?php if ($banners->getSize()): ?>
+<div class="main-instagram owl-carousel owl-theme">
+    <?php foreach ($banners as $banner): ?>
+
+        <div class="item">
+            <div class="ins-inner-box">
+                <img src="<?= $banner->getImageUrl(); ?>" alt="<?= $banner->getName(); ?>" />
+                <div class="hov-in">
+                    <a href="<?= $banner->getUrl(); ?>" title="<?= $banner->getName(); ?>"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+    <script type="text/javascript">
+        require(['jquery', 'owlcarousel'], function($) {
+            $('.main-instagram').owlCarousel({
+                loop: true,
+                margin: 0,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                navText: ["<i class='fas fa-arrow-left'></i>", "<i class='fas fa-arrow-right'></i>"],
+                responsive: {
+                    0: {
+                        items: 2,
+                        nav: true
+                    },
+                    600: {
+                        items: 3,
+                        nav: true
+                    },
+                    1000: {
+                        items: 5,
+                        nav: true,
+                        loop: true
+                    }
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

@@ -1,0 +1,36 @@
+<?php
+
+use DesignPattern\ViewModel\ViewModel\ProductProvider;
+use DesignPattern\ViewModel\ViewModel\ProductCollecttion;
+use Magento\Framework\View\Element\Template;
+
+/* @var  Template $block */
+
+/** @var  ProductProvider $viewModel */
+$viewModel = $block->getViewModel();
+$products = $viewModel->get();
+
+/* @var ProductCollecttion $viewProduct */
+$viewProduct = $block->getViewProduct();
+$viewer = $viewProduct->get();
+
+/** @var DesignPattern\ViewModel\Model\VirtualType  $viewVirtualType */
+$viewVirtualType = $block->getViewType();
+$virtualType = $viewVirtualType->getFruit();
+
+echo $products;
+
+?>
+<h3>Array data from Arguments item</h3>
+<pre>
+    <?php
+    print_r( $viewer);
+    ?>
+</pre>
+
+<h3>Fruits object from VirtualType</h3>
+<pre>
+    <?php
+        print_r($virtualType);
+    ?>
+</pre>

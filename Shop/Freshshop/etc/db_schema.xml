@@ -1,0 +1,15 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <table name="Shop_freshShop_template_config" resource="default" engine="innodb" comment="Fresh shop Attribute">
+            <column xsi:type="int" name="config_id" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+            <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Name attributes"/>
+            <column xsi:type="text" name="value" nullable="false" comment="Values"/>
+            <column xsi:type="varchar" name="type" nullable="false" length="255" comment="Types of value"/>
+            <column xsi:type="int" name="sort" unsigned="true" nullable="false" comment="sort code"/>
+            <column xsi:type="int" name="status" unsigned="true" nullable="false" comment="enabled/Disabled"/>
+            <column xsi:type="timestamp" name="time_occurred" default="CURRENT_TIMESTAMP" on_update="false" comment="Time of event"/>
+            <constraint xsi:type="primary" referenceId="PRIMARY">
+                <column name="config_id"/>
+            </constraint>
+        </table>
+</schema>

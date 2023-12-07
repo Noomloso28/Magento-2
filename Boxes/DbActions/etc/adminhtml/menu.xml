@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Boxes_DbActions::dbactions" title="Database Actions" module="Boxes_DbActions" sortOrder="51" resource="Boxes_DbActions::dbactions"/>
+        <add id="Boxes_DbActions::post" title="Manage Posts" module="Boxes_DbActions" sortOrder="10" action="boxes_dbactions/post/index" resource="Boxes_DbActions::post" parent="Boxes_DbActions::dbactions"/>
+        <add id="Boxes_DbActions::dbactions_configuration" title="Configuration" module="Boxes_DbActions" sortOrder="99" parent="Boxes_DbActions::dbactions" action="adminhtml/system_config/edit/section/dbactions" resource="Boxes_DbActions::dbactions_configuration"/>
+    </menu>
+</config>

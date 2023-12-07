@@ -1,0 +1,46 @@
+//
+//  Common
+//  _____________________________________________
+& when (@media-common = true) {
+  .brand-slider.owl-carousel {
+    .owl-stage-outer {
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      position: relative;
+      padding: 5px 0px;
+    }
+    .owl-nav {
+      button.owl-next,
+      button.owl-prev {
+        &:first-child {
+          left: 0px;
+        }
+        &:last-child {
+            right: -45px;
+        }
+      }
+    }
+    &:hover {
+      .owl-nav {
+        button.owl-next,
+        button.owl-prev {
+          width: 44px;
+          height: 44px;
+          line-height: 40px;
+          background-color: #fff;
+          border: 1px solid #e5e5e5;
+          color: #aaa;
+          margin: 0;
+          border-radius: 50%;
+          -moz-border-radius: 50%;
+          -webkit-border-radius: 50%;
+          &:hover {
+            background-color: #b14671;
+            border: 0px;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

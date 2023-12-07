@@ -1,0 +1,99 @@
+<?php
+/**
+ * @var \EmailValidate\Block\Index\FormValidate $block;
+ */
+?>
+
+
+
+<style type="text/css">
+    .alert-dismissible{
+        padding: 20px;
+        border-radius: 5px;
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        border: red 1px solid;
+        display: none;
+    }
+</style>
+
+<div id="error-message" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Holy guacamole!</strong> You should use another Email. This email not available.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-8">
+        <form name="addData" method="post" id="addData" class="form"
+              action="<?php echo $this->getFormAction(); ?>"
+              data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+              data-mage-init='{"validation":{}}'>
+            <fieldset class="fieldset">
+                <legend class="legend"><span><?= $block->escapeHtmlAttr(__('Ajax form Check In case Email Duplicate in system. ')) ?></span></legend>
+                <fieldset class="fieldset row">
+                    <div class="fields col-md-6">
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                    escapeHtmlAttr(__('Name')) ?></span></label>
+                            <div class="control">
+                                <input name="name" id="name" title="Name" value="" class="input-text" type="text"
+                                       data-validate="{required:true, 'validate-alphanum-with-spaces':true}">
+                            </div>
+                        </div>
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->
+                                    escapeHtmlAttr(__('Email')) ?></span></label>
+                            <div class="control">
+                                <input name="email" id="email" title="Email" value="" class="input-text" type="text"
+                                       data-validate="{required:true, 'validate-email':true}">
+                            </div>
+                        </div>
+                        <div class="field name required">
+                            <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Telephone')) ?></span></label>
+                            <div class="control">
+                                <input name="telephone" id="telephone" title="Telephone" value="" class="input-text"
+                                       type="text" data-validate="{required:true}">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </fieldset>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action submit primary" title="Save"><span><?= $block->
+                            escapeHtmlAttr(__('Save')) ?></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<h3>All Customer Email in System.</h3>
+<pre>
+    <?php print_r( $block->getEmailDetails() ); ?>
+</pre>
+
+<script>
+    require([
+        'jquery',
+        'EmailValidate'
+    ], function (
+        $,
+        EmailValidate
+    ){
+        'use strict'
+
+        $(function (){
+
+            EmailValidate;
+
+        });
+
+    });
+</script>
+

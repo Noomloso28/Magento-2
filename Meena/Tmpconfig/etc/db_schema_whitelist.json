@@ -1,0 +1,19 @@
+{
+    "meena_tmpconfig_tempate": {
+        "column": {
+            "id": true,
+            "name": true,
+            "value": true,
+            "is_published": true,
+            "created_at": true,
+            "updated_at": true,
+            "type": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "MEENA_TMPCONFIG_TEMPATE_NAME": true
+        }
+    }
+}

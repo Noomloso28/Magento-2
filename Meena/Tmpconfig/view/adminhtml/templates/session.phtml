@@ -1,0 +1,30 @@
+<div class="session-manager-page">
+<?php
+
+if( isset($_SESSION['tmpconfig'] )){
+
+    foreach ( $_SESSION['tmpconfig'] as $key => $value ){
+
+        echo '<pre><code>';
+        print_r( $value );
+        echo '</code></pre>';
+    }
+
+
+}
+
+?>
+</div>
+<style type="text/css">
+    .session-manager-page pre code {
+        display: block;
+        background: #524d49;
+        white-space: pre;
+        max-width: 100%;
+        min-width: 100px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        color: #fff;
+    }
+</style>

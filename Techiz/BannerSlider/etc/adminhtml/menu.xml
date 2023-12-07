@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Techiz_BannerSlider::banners_slider" title="Slider" translate="title" module="Techiz_BannerSlider" sortOrder="20" resource="Techiz_BannerSlider::banners_slider"/>
+        <add id="Techiz_BannerSlider::all_banners" title="All Banners" translate="title" module="Techiz_BannerSlider" sortOrder="10" resource="Techiz_BannerSlider::all_banners" parent="Techiz_BannerSlider::banners_slider" action="techiz_banners_slider/banner/index"/>
+        <add id="Techiz_BannerSlider::all_groups" title="All Groups" translate="title" module="Techiz_BannerSlider" sortOrder="10" resource="Techiz_BannerSlider::all_groups" parent="Techiz_BannerSlider::banners_slider" action="techiz_banners_slider/group/index"/>
+    </menu>
+</config>

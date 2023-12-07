@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="techiz_banners_slider"
+            class="Techiz\BannerSlider\Block\Widget\BannerSlider"
+            placeholder_image="Techiz_BannerSlider::images/banner-slider-widget.png" ttl="86400">
+        <label translate="true">Banners Slider</label>
+        <description translate="true">Show the banners slider via Group Name</description>
+        <parameters>
+            <parameter name="group_id" xsi:type="select" visible="true" required="true"
+                       source_model="Techiz\BannerSlider\Model\Group\Config\Source\Options">
+                <label translate="true">Group Name</label>
+            </parameter>
+            <parameter name="template" xsi:type="select" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default"
+                            value=""
+                            selected="true">
+                        <label translate="true">Select ...</label>
+                    </option>
+                    <option name="homepage"
+                            value="Techiz_BannerSlider::banner/list.phtml"
+                            selected="true">
+                        <label translate="true">Homepage Template</label>
+                    </option>
+                    <option name="brand"
+                            value="Techiz_BannerSlider::banner/brand-list.phtml"
+                            selected="true">
+                        <label translate="true">Brand Template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

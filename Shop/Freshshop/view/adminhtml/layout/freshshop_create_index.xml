@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Shop_Freshshop::css/bootstrap.min.css"/>
+        <css src="Shop_Freshshop::css/custom.css" />
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <!--block class="Magento\Backend\Block\Template" template="Shop_Freshshop::Index.phtml"/-->
+            <block class="Shop\Freshshop\Block\Form" template="Shop_Freshshop::Index.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

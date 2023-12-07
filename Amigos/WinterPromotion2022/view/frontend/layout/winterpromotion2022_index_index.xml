@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="u-body"/>
+        <referenceContainer name="content">
+            <container name="winter.promotion.2022" htmlTag="div" htmlClass="winter-promotion-2022">
+                <block class="Amigos\WinterPromotion2022\Block\CategoryPromotions" name="winterpromotion.2022.content" template="Amigos_WinterPromotion2022::promotions.phtml" ifconfig="winter_promotions_section/winter_promotions_general/enable" />
+            </container>
+        </referenceContainer>
+    </body>
+</page>

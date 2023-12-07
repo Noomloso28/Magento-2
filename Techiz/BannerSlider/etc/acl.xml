@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Techiz_BannerSlider::banners_slider" title="BannerSlider" translate="title" sortOrder="130">
+                    <resource id="Techiz_BannerSlider::all_banners" title="Banners" translate="title" sortOrder="10">
+                        <resource id="Techiz_BannerSlider::banner_create" title="Create" translate="title" sortOrder="10" />
+                        <resource id="Techiz_BannerSlider::banner_read" title="Read" translate="title" sortOrder="20" />
+                        <resource id="Techiz_BannerSlider::banner_update" title="Update" translate="title" sortOrder="30" />
+                        <resource id="Techiz_BannerSlider::banner_delete" title="Delete" translate="title" sortOrder="40" />
+                    </resource>
+                    <resource id="Techiz_BannerSlider::all_groups" title="Groups" translate="title" sortOrder="20">
+                        <resource id="Techiz_BannerSlider::group_create" title="Create" translate="title" sortOrder="10" />
+                        <resource id="Techiz_BannerSlider::group_read" title="Read" translate="title" sortOrder="20" />
+                        <resource id="Techiz_BannerSlider::group_update" title="Update" translate="title" sortOrder="30" />
+                        <resource id="Techiz_BannerSlider::group_delete" title="Delete" translate="title" sortOrder="40" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

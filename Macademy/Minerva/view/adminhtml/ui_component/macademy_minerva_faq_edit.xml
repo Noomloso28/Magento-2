@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">macademy_minerva_faq_edit.macademy_minerva_faq_edit_data_source</item>
+            <item name="deps" xsi:type="string">macademy_minerva_faq_edit.macademy_minerva_faq_edit_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Sample Form</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="save_and_continue" class="Magento\Customer\Block\Adminhtml\Edit\SaveAndContinueButton"/>
+            <button name="save" class="Magento\Customer\Block\Adminhtml\Edit\SaveButton"/>
+            <button name="reset" class="Magento\Customer\Block\Adminhtml\Edit\ResetButton"/>
+            <button name="order" class="Magento\Customer\Block\Adminhtml\Edit\OrderButton"/>
+            <button name="resetPassword" class="Magento\Customer\Block\Adminhtml\Edit\ResetPasswordButton"/>
+            <button name="unlock" class="Magento\Customer\Block\Adminhtml\Edit\UnlockButton"/>
+            <button name="invalidateToken" class="Magento\Customer\Block\Adminhtml\Edit\InvalidateTokenButton"/>
+            <button name="delete" class="Magento\Customer\Block\Adminhtml\Edit\DeleteButton"/>
+            <button name="back" class="Magento\Customer\Block\Adminhtml\Edit\BackButton"/>
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <deps>
+            <dep>macademy_minerva_faq_edit.macademy_minerva_faq_listing_data_source</dep>
+        </deps>
+        <spinner>sample_fieldset</spinner>
+    </settings>
+
+
+
+    <dataSource name="macademy_minerva_faq_edit_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Macademy\Minerva\Model\DataProvider</argument>
+            <argument name="name" xsi:type="string">macademy_minerva_faq_edit_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+
+
+    <fieldset name="sample_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Sample Fieldset</item>
+            </item>
+        </argument>
+
+        <!-- This field represents form id and is hidden -->
+        <field name="entity_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sampleform</item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- noom test html element -->
+        <field name="input_example" formElement="input" sortOrder="10">
+            <settings>
+                <visible>true</visible>
+                <elementTmpl>ui/form/element/input</elementTmpl>
+                <label translate="true">Input field example</label>
+            </settings>
+        </field>
+        <button name="custom_button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="buttonClasses" xsi:type="string">custom-button-class</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="targetName" xsi:type="string">TARGET_NAME</item>
+                            <item name="actionName" xsi:type="string">ACTION_NAME</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <displayAsLink>false</displayAsLink>
+                <title translate="true">Custom Button</title>
+            </settings>
+        </button>
+        <button name="custom_button_as_link">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="buttonClasses" xsi:type="string">custom-button-as-link-class</item>
+                    <item name="actions" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="targetName" xsi:type="string">TARGET_NAME</item>
+                            <item name="actionName" xsi:type="string">ACTION_NAME</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <displayAsLink>true</displayAsLink>
+                <title translate="true">Custom Button As Link</title>
+            </settings>
+        </button>
+
+        <field name="myCheckbox" formElement="checkbox">
+            <settings>
+                <label translate="true">Enabled</label>
+                <tooltip>
+                    <description translate="true">This is my checkbox's description</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>toggle</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="myCheckbox" formElement="checkbox">
+            <settings>
+                <label translate="true">Checkbox</label>
+                <tooltip>
+                    <description translate="true">This is my checkbox's description</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>checkbox</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+        <field name="myRadio" formElement="checkbox">
+            <settings>
+                <label translate="true">Radio</label>
+                <tooltip>
+                    <description translate="true">This is my radio's description</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <prefer>radio</prefer>
+                        <valueMap>
+                            <map name="false" xsi:type="boolean">false</map>
+                            <map name="true" xsi:type="boolean">true</map>
+                        </valueMap>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+
+        <field name="checkbox_toggle_notice_example" component="Magento_Ui/js/form/element/single-checkbox-toggle-notice" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                    <item name="notices" xsi:type="array">
+                        <item name="0" xsi:type="string" translate="true">Notice #1</item>
+                        <item name="1" xsi:type="string" translate="true">Notice #2</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Checkbox Toggle Notice</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+
+
+        <checkboxset name="checkboxset_example">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="additionalInfo" xsi:type="string">Additional information</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Checkboxset Component Example</label>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">Option #1</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">Option #2</item>
+                    </option>
+                    <option name="2" xsi:type="array">
+                        <item name="value" xsi:type="number">3</item>
+                        <item name="label" xsi:type="string" translate="true">Option #3</item>
+                    </option>
+                </options>
+            </settings>
+        </checkboxset>
+
+        <colorPicker name="colors_filter" class="Magento\Ui\Component\Form\Element\ColorPicker" component="Magento_Ui/js/form/element/color-picker">
+            <settings>
+                <label translate="true">Color</label>
+                <elementTmpl>ui/form/element/color-picker</elementTmpl>
+                <colorFormat>rgb</colorFormat>
+                <colorPickerMode>full</colorPickerMode>
+                <dataScope>colors_filter</dataScope>
+            </settings>
+        </colorPicker>
+
+        <field name="date_example" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">some_source</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="validate-date" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Date Example</label>
+                <visible>true</visible>
+                <dataScope>some_scope</dataScope>
+            </settings>
+        </field>
+
+        <email name="email_example">
+            <settings>
+                <label translate="true">Email Field Example</label>
+            </settings>
+        </email>
+
+        <fieldset name="fieldset_group">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Information</item>
+                    <item name="collapsible" xsi:type="boolean">true</item>
+                    <item name="opened" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <field name="my_field">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">My Field</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                    </item>
+                </argument>
+            </field>
+        </fieldset>
+
+        <fieldset name="foo">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                </item>
+            </argument>
+            <field name="bar">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string">Sound Check</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="formElement" xsi:type="string">fileUploader</item>
+                        <item name="uploaderConfig" xsi:type="array">
+                            <item name="url" xsi:type="url" path="path/to/controller"/>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+
+            <htmlContent name="html_content">
+                <settings>
+                    <additionalClasses>
+                        <class name="html-content-class">true</class>
+                    </additionalClasses>
+                </settings>
+                <block name="html_content_block" class="Magento\Backend\Block\Template">
+                    <arguments>
+                        <argument name="template" xsi:type="string">Macademy_Minerva::template.phtml</argument>
+                    </arguments>
+                </block>
+            </htmlContent>
+
+            <field name="imageUploaderExample" formElement="imageUploader">
+                <settings>
+                    <notice translate="true">Some notice.</notice>
+                    <label translate="true">Image Uploader Example</label>
+                    <componentType>imageUploader</componentType>
+                </settings>
+                <formElements>
+                    <imageUploader>
+                        <settings>
+                            <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                            <maxFileSize>2097152</maxFileSize>
+                            <uploaderConfig>
+                                <param xsi:type="string" name="url">path/to/save</param>
+                            </uploaderConfig>
+                        </settings>
+                    </imageUploader>
+                </formElements>
+            </field>
+
+        </fieldset>
+
+        <field name="select_element" formElement="select">
+            <settings>
+                <dataType>number</dataType>
+                <!--labelVisible>false</labelVisible-->
+                <label translate="true">Select Y?N </label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+
+        <file name="file_example">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">File Field</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="path/to/controller"/>
+                    </item>
+                </item>
+            </argument>
+        </file>
+
+        <field name="multiselect_example" formElement="multiselect">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Multiselect Example</label>
+                <dataScope>multiselect_example</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string">Option #1</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">2</item>
+                                <item name="label" xsi:type="string">Option #2</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="value" xsi:type="string">3</item>
+                                <item name="label" xsi:type="string">Option #3</item>
+                            </option>
+                        </options>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+
+        <radioset name="radioset_example">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="additionalInfo" xsi:type="string">Additional information</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Radioset Component Example</label>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">Option #1</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">Option #2</item>
+                    </option>
+                    <option name="2" xsi:type="array">
+                        <item name="value" xsi:type="number">3</item>
+                        <item name="label" xsi:type="string" translate="true">Option #3</item>
+                    </option>
+                </options>
+            </settings>
+        </radioset>
+
+        <field name="select_example" formElement="select">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Select Example</label>
+                <dataScope>select_example</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="1" xsi:type="array">
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string">Option #1</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">2</item>
+                                <item name="label" xsi:type="string">Option #2</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="value" xsi:type="string">3</item>
+                                <item name="label" xsi:type="string">Option #3</item>
+                            </option>
+                        </options>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+
+
+
+
+
+
+
+
+        <!-- end noom test -->
+
+
+
+        <!-- This field has data type 'text' and standard 'input' form element and looks like input -->
+        <field name="title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Some text</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sampleform</item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- This field has data type 'text'
+        and override standard 'input' form element's tempate and constructor by custom ones -->
+        <field name="color">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!--component constructor-->
+                    <item name="component" xsi:type="string">Macademy_Minerva/js/form/element/color-select</item>
+                    <!--main template for form field that renders elementTmpl as a child template-->
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <!--customized form element template that will show colors-->
+                    <item name="elementTmpl" xsi:type="string">Macademy_Minerva/form/element/color-select</item>
+                    <item name="label" xsi:type="string">Autumn colors</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">sampleform</item>
+                </item>
+            </argument>
+        </field>
+
+
+    </fieldset>
+
+    <fieldset name="tab2">
+        <settings>
+            <label translate="true">Tab 2</label>
+        </settings>
+
+        <container name="container_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="template" xsi:type="string">ui/form/components/complex</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="label" xsi:type="string">Container Label</item>
+                    <item name="additionalClasses" xsi:type="string">sample-additional-class</item>
+                    <item name="text" xsi:type="string" translate="true"><![CDATA[
+                    <p>
+                        Change these settings if you do not want to apply the global display configurations.
+                    </p>
+                ]]></item>
+                </item>
+            </argument>
+        </container>
+
+        <fieldset name="test-inside-fieldset">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                </item>
+            </argument>
+
+            <field name="text_example" formElement="input" sortOrder="10">
+                <settings>
+                    <elementTmpl>ui/form/element/text</elementTmpl>
+                    <label translate="true">Text Field Example</label>
+                    <imports>
+                        <link name="value">${ $.provider }:data.customer.firstname</link>
+                    </imports>
+                </settings>
+            </field>
+
+            <urlInput name="url_input_example">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="urlTypes" xsi:type="object">Magento\Ui\Model\UrlInput\LinksConfigProvider</item>
+                    </item>
+                </argument>
+            </urlInput>
+
+
+        </fieldset>
+
+        <field name="textarea_example">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="label" translate="true" xsi:type="string">Textarea Field Example</item>
+                    <item name="dataType" translate="true" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </field>
+
+        <fieldset name="content">
+            <settings>
+                <label>Wysiwyg Content</label>
+            </settings>
+            <field name="wysiwyg_example" sortOrder="50" formElement="wysiwyg">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="wysiwygConfigData" xsi:type="array">
+                            <item name="height" xsi:type="string">100px</item>
+                            <item name="add_variables" xsi:type="boolean">true</item>
+                            <item name="add_widgets" xsi:type="boolean">true</item>
+                            <item name="add_images" xsi:type="boolean">true</item>
+                            <item name="add_directives" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <label>Content</label>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <rows>8</rows>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+        </fieldset>
+
+
+    </fieldset>
+
+
+</form>

@@ -1,0 +1,93 @@
+<?php
+/**
+ * @var \Boxes\BestsellerEachCategories\Block\Products\BestsellerCategories $block;
+ */
+?>
+
+<?php
+    $category_ids = [1,2,3,4];
+
+    $Products = $block->ShowProductsBestSeller( $category_ids );
+
+
+
+?>
+
+
+<ul>
+    <?php foreach ($Products as $product): ?>
+
+        <li><?php echo $product->getProductName(); ?>--<?php echo $product->getQtyOrdered(); ?></li>
+        <li>
+            <?php
+                var_dump( $block->getImageById( $product ) );
+            ?>
+        </li>
+    <li>
+        <?php
+            var_dump( $block->displayProductImage($product  )) ;
+        ?>
+    </li>
+
+    <li>
+        <?php
+        var_dump( $product->getThumbnail() );
+
+        var_dump( $block->getImageURL($product )) ;
+        ?>
+        ?>
+    </li>
+
+    <li>
+        Instant :
+        <?php
+        $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $imageHelper  = $_objectManager->get('\Magento\Catalog\Helper\Image');
+        $image_url = $imageHelper->init($product, 'product_base_image')->setImageFile($product->getFile())->resize( 200,  300 )->getUrl();
+        var_dump( $image_url );
+        ?>
+    </li>
+
+    <li>
+        <hr>
+
+        <?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $product_ = $objectManager->create('Magento\Catalog\Model\Product')->load( $product['product_id'] );
+        echo $product_->getThumbnail()."<br>";
+        //echo  $product_->getProductUrl(). "<br>";
+
+        //var_dump( $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl() );
+
+
+        ?>
+        <img src="<?php  echo $block->getMediaUrl( $product_->getThumbnail() ); ?>" alt="" width="100">
+    </li>
+    <li>
+        getSimilarProduct
+        <?php
+            $getSimilarProduct = $block->getSimilarProduct( $product['product_id'] );
+
+        if (!empty( $getSimilarProduct )) {
+            echo 'Related Products <br />';
+            $productFactory = $this->productModel->create();
+            foreach ($getSimilarProduct as $relatedProduct) {
+                $_product = $productFactory->load($relatedProduct->getId());
+                echo $relatedProduct->getId().'-->'.$_product->getPrice().'-->'.$_product->getName().'-->'.$relatedProduct->getId(); //get name
+                echo "<br>";
+            }
+        }
+        ?>
+
+
+    </li>
+
+
+
+    <?php endforeach; ?>
+</ul>
+
+<pre>
+    <?php
+    var_dump( $block->ShowProductsBestSeller( $category_ids )->toArray( ) );
+    ?>
+</pre>

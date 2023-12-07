@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">tmpconfig_template_index.tmpconfig_template_index_data_source</item>
+            <item name="deps" xsi:type="string">tmpconfig_template_index.tmpconfig_template_index_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">tmpconfig_template</item>
+        </item>
+        <!--item name="template" xsi:type="string">templates/form/collapsible</item-->
+        <!--item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Techiz\BannerSlider\Block\Adminhtml\Banner\Edit\BackButton</item>
+            <item name="delete" xsi:type="string">Techiz\BannerSlider\Block\Adminhtml\Banner\Edit\DeleteButton</item>
+            <item name="reset" xsi:type="string">Techiz\BannerSlider\Block\Adminhtml\Banner\Edit\ResetButton</item>
+            <item name="save" xsi:type="string">Techiz\BannerSlider\Block\Adminhtml\Banner\Edit\SaveButton</item>
+            <item name="save_and_continue" xsi:type="string">Techiz\BannerSlider\Block\Adminhtml\Banner\Edit\SaveAndContinueButton</item>
+        </item-->
+
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="save" class="Meena\Tmpconfig\Block\Adminhtml\Button\Save"/>
+            <button name="reset" class="Magento\Customer\Block\Adminhtml\Edit\ResetButton"/>
+            <button name="back" class="Meena\Tmpconfig\Block\Adminhtml\Button\Back"/>
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <deps>
+            <dep>tmpconfig_template_index.tmpconfig_template_index_data_source</dep>
+        </deps>
+        <spinner>general</spinner>
+    </settings>
+
+    <dataSource name="tmpconfig_template_index_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Meena\Tmpconfig\Model\TemplateDataProvider</argument>
+            <argument name="name" xsi:type="string">tmpconfig_template_index_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">is_published</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <!--argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="techiz_banners_slider/banner/save"/>
+                </item>
+            </argument-->
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="*/*/Save"/>
+        </settings>
+    </dataSource>
+
+    <fieldset name="template_configs">
+        <settings>
+            <label translate="true">Settings</label>
+        </settings>
+
+
+        <fieldset name="general">
+
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="collapsible" xsi:type="boolean">true</item>
+                    <item name="opened" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Categories display</label>
+            </settings>
+
+
+            <container name="container_name">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="template" xsi:type="string">ui/form/components/complex</item>
+                        <item name="sortOrder" xsi:type="number">10</item>
+                        <item name="label" xsi:type="string">Categories homepage</item>
+                        <item name="additionalClasses" xsi:type="string">categories-homepage-display</item>
+                        <item name="text" xsi:type="string" translate="true"><![CDATA[
+                    <p>
+                        This setup for show on Homepage in Categories section. This setup for show on Homepage in Categories section. This setup for show on Homepage in Categories section.
+                    </p>
+                ]]></item>
+                    </item>
+                </argument>
+            </container>
+
+
+            <field name="id">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="visible" xsi:type="boolean">false</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">banner</item>
+                        <item name="dataScope" xsi:type="string">id</item>
+                    </item>
+                </argument>
+            </field>
+
+            <!-- Categories Upload images -->
+
+
+            <!-- Categories field 1 -->
+            <field name="categories_homepage_image_1">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="label" xsi:type="string" translate="true">Category Homepage Image 1</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="formElement" xsi:type="string">imageUploader</item>
+                        <item name="elementTmpl" xsi:type="string">Magento_Ui/js/form/element/image-uploader</item>
+                        <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">false</item>
+                        </item>
+                        <item name="uploaderConfig" xsi:type="array">
+                            <item name="url" xsi:type="url" path="*/*/Upload"/>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+
+            <field name="categories_homepage_detail_1"  formElement="wysiwyg" template="ui/form/field">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="wysiwygConfigData" xsi:type="array">
+                            <item name="is_pagebuilder_enabled" xsi:type="boolean">false</item>
+                            <item name="toggle_button" xsi:type="boolean">true</item>
+                            <item name="height" xsi:type="string">200px</item>
+                            <item name="add_variables" xsi:type="boolean">true</item>
+                            <item name="add_widgets" xsi:type="boolean">true</item>
+                            <item name="add_images" xsi:type="boolean">true</item>
+                            <item name="add_directives" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <label translate="true">Category Homepage detail 1</label>
+                    <dataScope>categories_homepage_detail_1</dataScope>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <rows>5</rows>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+            <!-- End Categories field 1 -->
+
+            <!-- Categories field 2 -->
+            <field name="categories_homepage_image_2">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="label" xsi:type="string" translate="true">Category Homepage Image 2</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="formElement" xsi:type="string">imageUploader</item>
+                        <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                        <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">false</item>
+                        </item>
+                        <item name="uploaderConfig" xsi:type="array">
+                            <item name="url" xsi:type="url" path="techiz_banners_slider/banner/upload"/>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="categories_homepage_detail_2"  formElement="wysiwyg" template="ui/form/field">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="wysiwygConfigData" xsi:type="array">
+                            <item name="is_pagebuilder_enabled" xsi:type="boolean">false</item>
+                            <item name="toggle_button" xsi:type="boolean">true</item>
+                            <item name="height" xsi:type="string">200px</item>
+                            <item name="add_variables" xsi:type="boolean">true</item>
+                            <item name="add_widgets" xsi:type="boolean">true</item>
+                            <item name="add_images" xsi:type="boolean">true</item>
+                            <item name="add_directives" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <label translate="true">Category Homepage detail 2</label>
+                    <dataScope>categories_homepage_detail_2</dataScope>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <rows>5</rows>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+            <!-- End Categories field 2 -->
+
+            <!-- Categories field 3 -->
+            <field name="categories_homepage_image_3">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">string</item>
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="label" xsi:type="string" translate="true">Category Homepage Image 3</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="formElement" xsi:type="string">imageUploader</item>
+                        <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                        <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">false</item>
+                        </item>
+                        <item name="uploaderConfig" xsi:type="array">
+                            <item name="url" xsi:type="url" path="techiz_banners_slider/banner/upload"/>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="categories_homepage_detail_3"  formElement="wysiwyg" template="ui/form/field">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">categories_homepage_image</item>
+                        <item name="wysiwygConfigData" xsi:type="array">
+                            <item name="is_pagebuilder_enabled" xsi:type="boolean">false</item>
+                            <item name="toggle_button" xsi:type="boolean">true</item>
+                            <item name="height" xsi:type="string">200px</item>
+                            <item name="add_variables" xsi:type="boolean">true</item>
+                            <item name="add_widgets" xsi:type="boolean">true</item>
+                            <item name="add_images" xsi:type="boolean">true</item>
+                            <item name="add_directives" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <label translate="true">Category Homepage detail 3</label>
+                    <dataScope>categories_homepage_detail_3</dataScope>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <rows>5</rows>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+            <!-- End Categories field 3 -->
+
+
+
+        </fieldset>
+
+        <fieldset name="slider2">
+
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="collapsible" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+
+            <settings>
+                <label translate="true">Slider Configs</label>
+            </settings>
+
+            <field name="storeviews">
+                <argument name="data" xsi:type="array">
+                    <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">int</item>
+                        <item name="label" xsi:type="string" translate="true">Store View</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="source" xsi:type="string">banner</item>
+                        <item name="dataScope" xsi:type="string">store_id</item>
+                        <item name="default" xsi:type="string">0</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+            <field name="order">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="label" xsi:type="string" translate="true">Sort Order</item>
+                        <item name="formElement" xsi:type="string">input</item>
+                        <item name="source" xsi:type="string">banner</item>
+                        <item name="dataScope" xsi:type="string">order</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-digits" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </field>
+        </fieldset>
+    </fieldset>
+
+
+    <fieldset name="slider">
+
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+
+        <settings>
+            <label translate="true">Slider Configs</label>
+        </settings>
+
+
+
+        <!--field name="status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Enable Banner</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">status</item>
+                    <item name="prefer" xsi:type="string">toggle</item>
+                    <item name="valueMap" xsi:type="array">
+                        <item name="true" xsi:type="number">1</item>
+                        <item name="false" xsi:type="number">2</item>
+                    </item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </field>
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">name</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">URL Link</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">url</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-url" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field-->
+
+
+
+
+        <!--field name="image">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">fileUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="techiz_banners_slider/banner/upload"/>
+                    </item>
+                </item>
+            </argument>
+        </field-->
+        <!--field name="group_id">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Techiz\BannerSlider\Ui\Component\Listing\Column\Group\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Group Name</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">group_id</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="storeviews">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Cms\Ui\Component\Listing\Column\Cms\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="label" xsi:type="string" translate="true">Store View</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">store_id</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="order">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Sort Order</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">banner</item>
+                    <item name="dataScope" xsi:type="string">order</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-digits" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field-->
+    </fieldset>
+
+    <fieldset name="list_product">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="label" xsi:type="string" translate="true">List Products</item>
+            </item>
+        </argument>
+        <insertListing name="products">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">products</item>
+                </item>
+            </argument>
+            <settings>
+                <externalData>id</externalData>
+                <externalProvider>${ $.ns }.product_listing_roaming</externalProvider>
+                <selectionsProvider>${ $.ns }.${ $.ns }.columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>product_listing_roaming</dataScope>
+                <ns>product_listing_roaming</ns>
+            </settings>
+        </insertListing>
+    </fieldset>
+
+</form>

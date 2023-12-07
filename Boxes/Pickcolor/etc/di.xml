@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Boxes\Pickcolor\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">boxes_color</argument>
+        </arguments>
+    </virtualType>
+    <type name="Boxes\Pickcolor\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">Boxes\Pickcolor\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DesignPattern_Roles::designpattern_rules"
+             title="Custom Rules"
+             module="DesignPattern_Roles"
+             parent="Magento_CatalogRule::promo"
+             sortOrder="40"
+             action="designpattern_roles/custom_rule/index"
+             dependsOnModule="Magento_Sales"
+             resource="Magento_CatalogRule::rule"
+        />
+    </menu>
+</config>

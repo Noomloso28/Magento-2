@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!-- The module XML registers the module with Magento -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <!-- Again, we define the name in the VendorName_ModuleName format -->
+    <module name="Macademy_JsFun"/>
+</config>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="DesignPattern\ViewModel\ViewModel\ProductCollecttion">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="person" xsi:type="string">Arthit</item>
+                <item name="old" xsi:type="string">35</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="FirstBowl" type="DesignPattern\ViewModel\Model\Bowl">
+        <arguments>
+            <argument name="fruits" xsi:type="array">
+                <item name="apple" xsi:type="string">Apple</item>
+                <item name="banana" xsi:type="string">Banana</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SecondBowl" type="DesignPattern\ViewModel\Model\Bowl">
+        <arguments>
+            <argument name="fruits" xsi:type="array">
+                <item xsi:type="string" name="strawbery">Strawberry</item>
+                <item xsi:type="string" name="coconut">Coconut</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="DesignPattern\ViewModel\Model\VirtualType">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item xsi:type="object" name="FirstBowl">FirstBowl</item>
+                <item xsi:type="object" name="SecondBowl">SecondBowl</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <KerryExpress>
+                <active>1</active>
+                <title>Kerry Express Shipping Prices</title>
+                <name>Kerry Express</name>
+                <shipping_cost>10</shipping_cost>
+                <sallowspecific>0</sallowspecific>
+                <sort_order>15</sort_order>
+                <model>Boxes\KerryExpress\Model\Carrier\KerryExpressShipping</model>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <handling_type>F</handling_type>
+                <price>10.00</price>
+            </KerryExpress>
+        </carriers>
+    </default>
+</config>

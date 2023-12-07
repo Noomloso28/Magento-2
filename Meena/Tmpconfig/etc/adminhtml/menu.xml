@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="Meena_Tmpconfig::tmpconfig"
+            title="TMP Configulation"
+            translate="title"
+            module="Meena_Tmpconfig"
+            resource="Meena_Tmpconfig::tmpconfig"
+            parent="Magento_Backend::content"
+            sortOrder="100"
+        />
+
+        <add
+            id="Meena_Tmpconfig::configulation"
+            title="Configulation"
+            module="Meena_Tmpconfig"
+            sortOrder="1"
+            action="tmpconfig/configulation/index"
+            resource="Meena_Tmpconfig::configulation"
+            parent="Meena_Tmpconfig::tmpconfig"
+        />
+
+        <add
+            id="Meena_Tmpconfig::template"
+            title="Template"
+            translate="title"
+            module="Meena_Tmpconfig"
+            resource="Meena_Tmpconfig::template"
+            parent="Meena_Tmpconfig::tmpconfig"
+            action="tmpconfig/template/index/id/1"
+            sortOrder="2"
+        />
+
+        <add
+            id="Meena_Tmpconfig::session"
+            title="Session Manger"
+            translate="title"
+            module="Meena_Tmpconfig"
+            resource="Meena_Tmpconfig::session"
+            parent="Meena_Tmpconfig::tmpconfig"
+            action="tmpconfig/configulation/session"
+            sortOrder="3"
+        />
+
+        <add
+            id="Meena_Tmpconfig::employee_edit"
+            title="Employee Edit"
+            translate="title"
+            module="Meena_Tmpconfig"
+            resource="Meena_Tmpconfig::template"
+            parent="Meena_Tmpconfig::tmpconfig"
+            action="tmpconfig/employee/edit"
+            sortOrder="4"
+        />
+
+
+
+
+    </menu>
+</config>

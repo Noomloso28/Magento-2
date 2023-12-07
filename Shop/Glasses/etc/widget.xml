@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="Shop_Glasses_Widget_Show" class="Shop\Glasses\Block\Widget\PageWidget">
+        <label>Shop Glasses Custom Widget</label>
+        <description>Shop Glasses Widget Example</description>
+        <parameters>
+            <parameter name="shop_title" xsi:type="text" visible="true" required="true">
+                <label translate="true">Shop Glasses Title</label>
+            </parameter>
+            <parameter name="shop_description" xsi:type="block" visible="true" required="true">
+                <label translate="true">Shop Glasses Description</label>
+                <block class="Shop\Glasses\Block\Adminhtml\Widget\TextAreaField"/>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

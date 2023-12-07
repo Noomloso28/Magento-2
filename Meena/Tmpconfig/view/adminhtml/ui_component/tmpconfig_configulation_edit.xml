@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">tmpconfig_configulation_edit.tmpconfig_configulation_edit_data_source</item>
+            <item name="deps" xsi:type="string">tmpconfig_configulation_edit.tmpconfig_configulation_edit_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Configulation Form</item>
+        <item name="layout" xsi:type="array">
+            <item name="type" xsi:type="string">tabs</item>
+        </item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">tmpconfig_configulation</item>
+        </item>
+        
+
+
+        <!--item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Meena\Tmpconfig\Block\Adminhtml\Button\Back</item>
+            <item name="save" xsi:type="string">Meena\Tmpconfig\Block\Adminhtml\Button\Save</item>
+        </item-->
+
+
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="save" class="Meena\Tmpconfig\Block\Adminhtml\Button\Save"/>
+            <button name="reset" class="Magento\Customer\Block\Adminhtml\Edit\ResetButton"/>
+            <button name="back" class="Meena\Tmpconfig\Block\Adminhtml\Button\Back"/>
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <deps>
+            <dep>tmpconfig_configulation_edit.tmpconfig_configulation_edit_data_source</dep>
+        </deps>
+        <spinner>meena_tmpconfig_tempate</spinner>
+    </settings>
+
+    <dataSource name="tmpconfig_configulation_edit_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Meena\Tmpconfig\Model\DataProvider</argument>
+            <argument name="name" xsi:type="string">tmpconfig_configulation_edit_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <!--argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="tmpconfig/configulation/edit/id/1"/>
+                </item>
+        </argument-->
+        <settings>
+            <submitUrl path="*/*/edit"/>
+        </settings>
+    </dataSource>
+
+
+    <fieldset name="meena_tmpconfig_tempate">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="label" xsi:type="string" translate="true">Details</item>
+            </item>
+        </argument>
+
+        <!-- This field represents form id and is hidden -->
+        <field name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">template</item>
+                    <item name="dataScope" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </field>
+
+        <!-- Form Elements -->
+        
+        <field name="type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                        <item name="visible" xsi:type="boolean">true</item>
+                        <item name="dataType" xsi:type="string">text</item>
+                        <item name="formElement" xsi:type="string">select</item>
+                        <item name="source" xsi:type="string">type</item>
+                        <item name="dataScope" xsi:type="string">type</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="options" xsi:type="array">      
+                            
+                                <item name="none" xsi:type="array">
+                                    <item name="label" xsi:type="string">-- Select --</item>
+                                    <item name="value" xsi:type="string"></item>
+                                </item>                 
+                                <item name="block" xsi:type="array">
+                                    <item name="label" xsi:type="string">Block</item>
+                                    <item name="value" xsi:type="string">block</item>
+                                </item>
+                                <item name="text" xsi:type="array">
+                                    <item name="label" xsi:type="string">Text</item>
+                                    <item name="value" xsi:type="string">text</item>
+                                </item>
+                                <item name="photo" xsi:type="array">
+                                    <item name="label" xsi:type="string">Photo</item>
+                                    <item name="value" xsi:type="string">photo</item>
+                                </item>
+                        </item>
+                    </item>
+                </argument>
+        </field>
+            
+            
+        
+        <!--field name="type" formElement="select" sortOrder="1">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Select Type</label>
+                <dataScope>select_type</dataScope>
+                <required>true</required>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="block" xsi:type="array">
+                                <item name="value" xsi:type="string">block</item>
+                                <item name="label" xsi:type="string">Block</item>
+                            </option>
+                            <option name="text" xsi:type="array">
+                                <item name="value" xsi:type="string">text</item>
+                                <item name="label" xsi:type="string">Text</item>
+                            </option>
+                            <option name="photo" xsi:type="array">
+                                <item name="value" xsi:type="string">photo</item>
+                                <item name="label" xsi:type="string">Photo</item>
+                            </option>
+                        </options>
+                        <caption translate="true"> Please Select </caption>
+                        
+                    </settings>
+                </select>
+            </formElements>
+        </field-->
+
+
+        <field name="is_published" formElement="checkbox">
+          <argument name="data" xsi:type="array">
+              <item name="config" xsi:type="array">
+                  
+                  <item name="source" xsi:type="string">is_published</item>
+                  <item name="default" xsi:type="number">1</item>
+              </item>
+          </argument>
+          <settings>
+              <dataType>boolean</dataType>
+              <label translate="true">Enable ? Disable</label>
+              <dataScope>status</dataScope>
+          </settings>
+          <formElements>
+              <checkbox>
+                  <settings>
+                      <valueMap>
+                          <map name="false" xsi:type="number">0</map>
+                          <map name="true" xsi:type="number">1</map>
+                      </valueMap>
+                      <prefer>toggle</prefer>
+                  </settings>
+              </checkbox>
+          </formElements>
+        </field>
+        
+     
+
+
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Attribute</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">template</item>
+                    <item name="dataScope" xsi:type="string">name</item>
+                </item>
+            </argument>
+        </field>
+
+        <fieldset name="wysiwyg_area">
+            <settings>
+                <label>Value</label>
+            </settings>
+            <field name="value" sortOrder="50" formElement="wysiwyg">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="wysiwygConfigData" xsi:type="array">
+                            <item name="height" xsi:type="string">200px</item>
+                            <item name="add_variables" xsi:type="boolean">true</item>
+                            <item name="add_widgets" xsi:type="boolean">true</item>
+                            <item name="add_images" xsi:type="boolean">true</item>
+                            <item name="add_directives" xsi:type="boolean">true</item>
+                        </item>
+                        <item name="dataScope" xsi:type="string">value</item>
+                    </item>
+                </argument>
+                <settings>
+                    <label>Content</label>
+                </settings>
+                <formElements>
+                    <wysiwyg>
+                        <settings>
+                            <rows>8</rows>
+                            <wysiwyg>true</wysiwyg>
+                        </settings>
+                    </wysiwyg>
+                </formElements>
+            </field>
+        </fieldset>
+        
+        
+        <!--field name="created_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">created_at</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">template</item>
+                    <item name="dataScope" xsi:type="string">created_at</item>
+                    
+                </item>
+            </argument>
+        </field>
+        
+        <field name="updated_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">updated_at</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">template</item>
+                    <item name="dataScope" xsi:type="string">updated_at</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field-->
+        
+
+        <!-- End Form Element -->
+
+    </fieldset>
+
+
+
+</form>

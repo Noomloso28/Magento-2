@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Meena\Tmpconfig\Model\ResourceModel\Template\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">meena_tmpconfig_tempate</argument>
+            <argument name="resourceModel" xsi:type="string">Meena\Tmpconfig\Model\ResourceModel\Template</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="tmpconfig_configulation_listing_data_source" xsi:type="string">Meena\Tmpconfig\Model\ResourceModel\Template\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+
+
+    <virtualType name="Meena\Tmpconfig\Model\Session\Storage" type="Magento\Framework\Session\Storage">
+        <arguments>
+            <argument name="namespace" xsi:type="string">tmpconfig</argument>
+        </arguments>
+    </virtualType>
+    <type name="Meena\Tmpconfig\Model\Session">
+        <arguments>
+            <argument name="storage" xsi:type="object">Meena\Tmpconfig\Model\Session\Storage</argument>
+        </arguments>
+    </type>
+
+    <type name="Meena\Tmpconfig\Model\UploadSetup\ImageUploader">
+        <arguments>
+            <!-- Temporary file stored in pub/media/faq/tmp/icon -->
+            <argument name="baseTmpPath" xsi:type="string">meena/tmp/photos</argument>
+            <argument name="basePath" xsi:type="string">meena/photos</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+</config>

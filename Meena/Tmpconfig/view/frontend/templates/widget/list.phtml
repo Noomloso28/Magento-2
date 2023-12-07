@@ -1,0 +1,50 @@
+<?php
+
+/** @var \Techiz\BannerSlider\Block\Widget\BannerSlider $block */
+$banners = $block->getBanners();
+?>
+
+<?php if ($banners->getSize()): ?>
+
+<ul class="slides-container">
+    <?php foreach ($banners as $banner): ?>
+    <li class="text-center">
+        <img src="<?= $banner->getImageUrl(); ?>" alt="<?= $banner->getName(); ?>">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="m-b-20"><strong>Welcome To <br> Freshshop</strong></h1>
+                    <p class="m-b-40">See how your users experience your website in realtime or view <br> trends to see any changes in performance over time.</p>
+                    <p><a class="btn hvr-hover" href="<?php $banner->getUrl(); ?>" title="<?= $banner->getName(); ?>"><?= __('Shop New');?></a></p>
+                </div>
+            </div>
+        </div>
+    </li>
+    <?php endforeach; ?>
+</ul>
+    <div class="slides-navigation">
+        <a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+    </div>
+
+
+    <script type="text/javascript">
+        require( [
+                'jquery',
+                'slider-gellery'
+            ],
+            function($ , config ) {
+
+                $('#slides-shop').superslides({
+                    inherit_width_from: '.cover-slides',
+                    inherit_height_from: '.cover-slides',
+                    play: 5000,
+                    animation: 'fade',
+                });
+
+                $(".cover-slides ul li").append("<div class='overlay-background'></div>");
+            });
+       // });
+    </script>
+
+<?php endif; ?>

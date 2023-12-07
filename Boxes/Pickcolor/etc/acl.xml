@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::content">
+                    <resource id="Boxes_Pickcolor::pickcolor" title="Boxes Color Config" translate="title" sortOrder="1000">
+                        <resource id="Boxes_Pickcolor::config" title="Config tools" translate="title">
+                            <resource id="Boxes_Pickcolor::config_save" title="Save" translate="title"/>
+                            <resource id="Boxes_Pickcolor::config_delete" title="Delete" translate="title"/>
+                        </resource>
+
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

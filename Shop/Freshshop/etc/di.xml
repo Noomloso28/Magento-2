@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="Excellence\Hello\Model\Resource\Test\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">freshshop_hello_test</argument>
+            <argument name="resourceModel" xsi:type="string">Shop\Freshshop\Model\ResourceModel\Extension</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="test_form_data_source" xsi:type="string">Shop\Freshshop\Model\Resource\Extension\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>
+
