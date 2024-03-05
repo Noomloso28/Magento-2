@@ -1,0 +1,28 @@
+{
+    "name": "immerce/faktum-navconnector",
+    "description": "Lucullus Navconnector import module.",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "IMMERCE GmbH",
+            "email": "developer@immerce.de",
+            "homepage": "https://www.immerce.de",
+            "role": "Magento 2 e-commerce solutions provider"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=7.4",
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Immerce\\FaktumNavConnector\\": ""
+        }
+    }
+}

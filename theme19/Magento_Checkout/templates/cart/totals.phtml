@@ -1,0 +1,47 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Shopping cart totals template
+ * @var $block \Magento\Checkout\Block\Cart\Totals
+ */
+?>
+<div id="cart-totals" class="cart-totals" data-bind="scope:'block-totals'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+            {
+                "#cart-totals": {
+                    "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+                }
+            }
+    </script>
+</div>
+<?php
+	if($this->helper(Luckyduck\Extrafee\Helper\Data::class)->isModuleEnabled()):
+	$currentCurrency = $this->helper(Luckyduck\Customization\Helper\Miscellaneous::class)->getcurrentCurrencyCode();
+	$fee = $currentCurrency.' '.$this->helper(Luckyduck\Extrafee\Helper\Data::class)->getExtrafee();
+	$amount = $currentCurrency.' '.$this->helper(Luckyduck\Extrafee\Helper\Data::class)->getMinimumOrderAmount();
+	$label = $this->helper(Luckyduck\Extrafee\Helper\Data::class)->getFeeLabel();
+	$storeId = $this->helper(Luckyduck\Customization\Helper\Data::class)->getCurrentStoreId();
+?>
+<div class="extrafee-text">
+    <p><?php echo __('Shipping cost will always be charged.'); ?></p>
+
+    <p>
+        <?php
+            if($storeId == 1){
+                echo sprintf('Bei einem Bestellwert unter %s,- verrechnen wir einen Administrativ-Zuschlag über %s.-. Dies gilt nicht für Bordeaux-en-Primeur-Weine.', $amount, $fee);
+            } else {
+                echo sprintf('An administration fee of %s.- will be charged for orders below %s.-. This does not apply to Bordeaux-en-Primeur wines.', $fee, $amount);
+            }
+        ?>
+    </p>
+
+
+</div>
+
+<?php endif; ?>

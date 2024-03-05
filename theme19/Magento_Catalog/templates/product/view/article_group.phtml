@@ -1,0 +1,24 @@
+
+<?php /** @var $block \Magento\Catalog\Block\Product\AbstractProduct */ ?>
+<div class="product-attribute-contenar">
+	<div class="product-attribute-grid">
+		<div class="product-article-group"><?php echo $this->getProduct()->getAttributeText('article_group'); ?></div>
+		<div class="product-year"><?php echo $this->getProduct()->getAttributeText('year'); ?></div>
+		<div class="product-capacity-in-cl"><?php echo $this->getProduct()->getAttributeText('capacity_in_cl').' cl'; ?></div>
+        <?php
+            if(is_object($bioStatus = $block->getProduct()->getCustomAttribute('lucullus_bio_dynamic'))){
+                if($bioStatus->getValue() == true):
+        ?>
+                <div class="product-bio-status">
+                    <img src="<?php echo $this->getViewFileUrl('images/BIO_icon.jpg'); ?>" alt="<?php echo $this->getProduct()->getAttributeText('lucullus_bio_dynamic'); ?>" />
+                </div>
+        <?php
+                endif;
+            }
+        ?>
+	</div>
+	<div class="product-description"><?php echo $this->getProduct()->getDescription(); ?></div>
+</div>
+
+
+

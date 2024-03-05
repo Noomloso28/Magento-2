@@ -1,0 +1,26 @@
+<?php
+    $_product = $this->getProduct();
+    /** @var $helper Luckyduck\Customization\Helper\Data */
+    $helper = $this->helper('Luckyduck\Customization\Helper\Data');
+    $reviews = $helper->getRatingReviewer($_product, true);
+    if(count($reviews) > 0):
+
+    ?>
+    <div id="rateform">
+        <div class="slider-header"><?php echo __('Ratings & tasting notes'); ?><a id="close_rate" class="ui-button-icon-primary ui-icon ui-icon-closethick right">X</a></div>
+        <?php
+            foreach ($reviews as $key => $review){
+         ?>
+                <div class="right rate-tab reviewer-score"><?php echo $review['score']; ?></div>
+                <div class="rate-tab reviewer-expert"><?php echo $review['expert']; ?></div>
+                <div class="small reviewer-name"><?php echo $review['name']; ?></div>
+                <div ><?php echo $review['comment']; ?></div>
+                <hr/>
+        <?php
+            }
+        ?>
+    </div>
+
+<?php
+    endif;
+    ?>

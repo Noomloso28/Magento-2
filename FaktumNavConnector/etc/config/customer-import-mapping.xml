@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<mapping>
+    <fields scope="base">
+        <field name="faktum_contact_no" type="text">nav_contact_no</field>
+        <field name="faktum_customer_id" type="text">nav_cust_id</field>
+        <field name="faktum_customer_type" type="text">nav_cust_type</field>
+        <field name="faktum_shipping_agent_service_code" type="text">nav_shipping_agent_service_code</field>
+        <field name="faktum_shipping_agent_code" type="text">nav_shipping_agent_code</field>
+        <field name="faktum_shipping_method" type="text">nav_shipping_method</field>
+        <field name="faktum_validate_order" type="text">validate_order</field>
+    </fields>
+</mapping>

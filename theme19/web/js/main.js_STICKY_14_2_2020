@@ -1,0 +1,224 @@
+require([
+    "jquery"
+], function ($) {
+	$(".amasty-catalog-topnav").appendTo($(".sortfilter"));
+	$(".toolbar-amount").hide();
+    $(".limiter").hide();
+    $('#amasty-shopby-product-list .toolbar-products:last').remove();
+	function callback() {
+        //window sizes
+        var xsmall= 479,
+            small= 599,
+            medium= 1024,
+            large= 1050,
+            xlarge= 1199;
+
+        var windowSize = $(window).width();
+
+        if(windowSize > small){
+            addScrollableToolbar(true);
+            //addScrollableFilter('medium');
+        } else {
+            addScrollableToolbar(0);
+            //addScrollableFilter('small');
+        }
+        if(windowSize > medium){
+            //addScrollableFilter('large');
+        }
+        
+    }
+	callback();
+    $(window).load(callback());
+    $(window).resize(callback());
+    // for scrollable toolbar
+    function addScrollableToolbar(position){
+        var block = $('.toolbar');
+		var blockWidth = $('#amasty-shopby-product-list').width();
+		block.width(blockWidth);
+		$(window).scroll(function(e){ 
+			var $el = $('.toolbar'); 
+			var isPositionFixed = ($el.css('position') == 'fixed');
+			if ($(this).scrollTop() > 200 && !isPositionFixed){ 
+				$el.css({'position': 'fixed', 'top': '0px'}); 
+			}
+			if ($(this).scrollTop() < 200 && isPositionFixed){
+				$el.css({'position': 'static', 'top': '0px'}); 
+			} 
+		});
+    }
+    //For scrolling filter
+    function addScrollableFilter(size){
+        
+    }
+    
+    
+    /**
+	 * Function gets Data Set
+	 */
+	$(".pdfdownload").click(function () {
+		var AjaxUrl = $(".pdfurls").attr('data-href');
+		var param = 1;
+		$.ajax({
+            showLoader: true,
+            url: AjaxUrl,
+            data: param,
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: "POST"
+        }).done(function (outputData) {
+            $('.loading-mask').hide();
+            $('<form></form>').attr('id', 'downloadFileForm' ).attr('action', BASE_URL + 'customization/index/download').attr('method', 'post' ).appendTo('body');
+            $('#downloadFileForm').append('<input type="hidden" name="header_content_description" value="' + outputData.header_content_description + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="header_content_type" value="' + outputData.header_content_type + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="file_name" value="' + outputData.file_name + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="file_path" value="' + outputData.file_path + '"></input');
+            $('#downloadFileForm').submit();
+            $('#downloadFileForm').remove();
+            return false;
+        });
+	});
+	$(".exceldownload").click(function () {
+		var AjaxUrl = $(".excelurls").attr('data-href');
+		var param = 1;
+		$.ajax({
+            showLoader: true,
+            url: AjaxUrl,
+            data: param,
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            type: "POST"
+        }).done(function (outputData) {
+            $('.loading-mask').hide();
+            $('<form></form>').attr('id', 'downloadFileForm' ).attr('action', BASE_URL + 'customization/index/download').attr('method', 'post' ).appendTo('body');
+            $('#downloadFileForm').append('<input type="hidden" name="header_content_description" value="' + outputData.header_content_description + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="header_content_type" value="' + outputData.header_content_type + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="file_name" value="' + outputData.file_name + '"></input');
+            $('#downloadFileForm').append('<input type="hidden" name="file_path" value="' + outputData.file_path + '"></input');
+            $('#downloadFileForm').submit();
+            $('#downloadFileForm').remove();
+            return false;
+        });
+	});
+
+    jQuery(document).on('mouseover', '.rating_dialog',  function(event) {
+        var elem = jQuery( event.target );
+        var id = elem.attr('data-dialog');
+        //var url = elem.attr('data-href');
+        var htm = jQuery('.ratingdia_html_'+id).html();
+        //runDialog(elem,id,url);
+        openDialogPoup(elem,htm,id);
+    });
+     jQuery(document).on('mouseout', '.rating_dialog',  function(event) {
+     	var elem = jQuery( event.target );
+        var id = elem.attr('data-dialog');
+     	jQuery('.ratingdia_html_'+id).dialog( "close" );
+     });
+    
+    function openDialogPoup(elem,htmlcont,id){
+    	//jQuery('.hiderating').hide();    	
+        jQuery('.ratingdia_html_'+id).dialog({
+            autoOpen: false,
+            resizable:true,
+            modal: false,
+            closeOnEscape: false,
+            position: { my: "right+25 top", at: "right+20 bottom", of: elem,collision: "none"},
+        });
+
+        jQuery('.ui-dialog-titlebar').first().before(function() {
+            //return '<div class="ratecall">&nbsp;</div>';                      
+        });
+        jQuery('.ui-button-text').remove();
+        jQuery('.ratingdia_html_'+id).dialog( "open" );
+        jQuery('.ratingdia_html_'+id).show().parent().addClass('retting_dialog');
+	}
+
+    function runDialog(elem,id,url)
+    {    
+        jQuery( "#dialog-form" ).remove();            
+        $.ajax({
+            showLoader: true,
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                product_id: id
+            },
+            success: function (response) {
+                $('.loading-mask').hide();
+                jQuery('.products-list').first().after(function() {
+                    return response.html;
+                });
+
+                jQuery( "#dialog-form" ).dialog({
+                    autoOpen: false,
+                    resizable:true,
+                    modal: false,
+                    closeOnEscape: false,
+                    position: { my: "right+25 top", at: "right+20 bottom", of: elem,collision: "none"},
+                });
+
+                jQuery('.ui-dialog-titlebar').first().before(function() {
+                    //return '<div class="ratecall">&nbsp;</div>';                      
+                });
+                jQuery('.ui-button-text').remove();
+                jQuery( "#dialog-form" ).dialog( "open" );
+                jQuery("#dialog-form").parent().addClass('retting_dialog');
+            },
+            error: function (xhr, status, errorThrown) {
+                console.log('Error happens. Try again.');
+            }
+        });            
+    }
+	
+	$('#show_score').click(function(){
+	  $("#rateform").toggle();
+	});
+	$('#close_rate').click(function(){
+	  $("#rateform").css('display','none');
+	});
+	
+	
+	/**
+	* Added on 15-01-2020
+	*/
+	$('#buy_wine').mouseover(function(){
+	 	 jQuery('.custom-mega-menu').css('display','none');
+		 jQuery('#buy_wine_subheader').css('display','block');
+	});
+	$('.nav-main').mouseleave(function(){
+	 	 jQuery('.custom-mega-menu').css('display','none'); 
+		   
+	});
+
+    /**
+    * Added on 16-01-2020
+    */
+    $(document).on('click','.customLink', function() {
+		if($(window).width() > 1024){
+			$("#header_account_sub").toggle();
+		}else{
+			$(".customLink").toggleClass('parent-menu-active').siblings().removeClass('parent-menu-active');
+			$(".mobile-account-details").toggleClass('menu-active').siblings().removeClass('menu-active');
+		}
+        
+    });
+	
+	
+	$(".mobile-menu").click(function(){
+	  $(".mobile-menu").toggleClass('parent-menu-active').siblings().removeClass('parent-menu-active');
+	  $(".menu-links").toggleClass('menu-active').siblings().removeClass('menu-active');
+	});
+	$(".mobile-search").click(function(){
+	  $(".mobile-search").toggleClass('parent-menu-active').siblings().removeClass('parent-menu-active');
+	  $(".mobile-search-details").toggleClass('menu-active').siblings().removeClass('menu-active');
+	});
+	
+    $(document).on('click','#animate-menu-pricelist', function() {
+        $("#sidecontent-pricelist").toggleClass('active');
+    });
+	
+	$(document).on('click','.cart-qty', function() {
+		$('.action.update').click();
+	});
+    
+});

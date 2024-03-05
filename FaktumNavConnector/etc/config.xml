@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <navconnector>
+            <general>
+                <product_path>/nav-connector/import/products/product.xml</product_path>
+                <customer_path>/nav-connector/import/customers/customer.xml</customer_path>
+                <order_path>/nav-connector/import/orders/order.xml</order_path>
+            </general>
+        </navconnector>
+    </default>
+</config>

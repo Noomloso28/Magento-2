@@ -1,0 +1,368 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\Action\Action;
+
+?>
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product list template
+ *
+ * @var $block ListProduct
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$objectManager = ObjectManager::getInstance();
+$_soxeshelper = $this->helper('Luckyduck\Customization\Helper\Data');
+$customHelper = $this->helper('Luckyduck\Customization\Helper\Miscellaneous');
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$extraoptions = $objectManager->get('Luckyduck\Extramanagement\Model\Optionlist');
+$currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currencyCode = $currencysymbol->getStore()->getCurrentCurrencyCode();
+$getMediaImageUrl = $_soxeshelper->getMediaImageUrl();
+$storeId = $_soxeshelper->getCurrentStoreId();
+
+$cust = $objectManager->get('Magento\Customer\Model\SessionFactory');
+$custddata = $cust->create();
+?>
+<?php
+if (! $_productCollection->count()) : ?>
+    <div class="message info empty">
+        <div><?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?></div>
+    </div>
+<?php
+else : ?>
+    <?php
+    echo $block->getToolbarHtml(); ?>
+    <?= $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $templateType = ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
+        $templateType = ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
+        <ol class="products list items product-items">
+            <?php
+            /** @var $_product Product */ ?>
+            <?php
+            foreach ($_productCollection as $___product) : ?>
+                <?php
+                $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($___product->getId()); ?>
+
+                <li class="item product product-item">
+                    <div class="product-item-info" data-container="product-<?= /* @noEscape */
+                    $viewMode ?>">
+                        <?php
+                        $productImage = $block->getImage($_product, $imageDisplayArea);
+                        if ($pos != null) {
+                            $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                                . 'top:' . $productImage->getHeight() . 'px;"';
+                        }
+                        ?>
+                        <?php
+                        // Product Image
+                        $isPrimeur = $_soxeshelper->isPrimeur($_product);
+                        $new = $_product->getResource()->getAttribute('is_new')->getFrontend()->getValue($_product);
+                        $newLabel = $_soxeshelper->getNew($new);
+                        ?>
+
+                        <div class="product details product-item-details">
+                            <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                            ?>
+                            <div class="product-new"><?php
+                                echo $newLabel; ?></div>
+                            <div class="product-image <?php
+                            echo $_soxeshelper->getClassName($_product); ?>">&nbsp;
+                            </div>
+                            <strong class="product name product-item-name">
+                                <a class="product-item-link"
+                                   href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                    <?= /* @noEscape */
+                                    $_soxeshelper->splitNameByYear($_productNameStripped); ?>
+                                </a>
+                            </strong>
+                        </div>
+
+                        <div class="product details product-item-details"><?php
+                            echo $_product->getResource()->getAttribute('year')->getFrontend()->getValue($_product); ?>
+                            &nbsp;
+                        </div>
+                        <div class="product details product-item-details">
+                            <?php
+                            echo $_product->getResource()->getAttribute('capacity_in_cl')->getFrontend()->getValue(
+                                $_product
+                            );
+                            if ($_product->getResource()->getAttribute('capacity_in_cl')->getFrontend()->getValue(
+                                    $_product
+                                ) != '') {
+                                echo " " . __('cl');
+                            }
+                            ?>&nbsp;
+                        </div>
+                        <div class="product details product-item-details">
+                            <label><?php
+                                echo __('Stock'); ?></label>
+                            <span>
+	                    	<?php
+                            $_stock = $customHelper->getproductStock($_product);
+                            echo $_stock;
+                            ?>
+                            <?php
+                            /*
+                            $isExtra = $_product->getExtra();
+                            $extra = $_product->getResource()->getAttribute('extra')->getFrontend()->getValue(
+                                $_product
+                            );
+                            echo ($isExtra && strpos(strtoupper($extra), 'PRIMEUR') !== false) ? $extra : $_stock;*/
+                            ?>
+						</span>
+                        </div>
+                        <div class="product details product-item-details"><?php
+                            echo $_product->getRegionSortOrder(); ?>&nbsp;
+                        </div>
+                        <div class="product details product-item-details price-tax <?php
+                        if ($isPrimeur) {
+                            echo 'tooltip';
+                        } ?>">
+                            <?php
+                            if ($isPrimeur && $_product->getFinalPrice() <= 0) { ?>
+                                <?php
+                                echo __('primeur price'); ?>
+                                <?php
+                                echo '<span class="tooltiptext">' . __('to be confirmed') . '</span>'; ?>
+                                <?php
+                            } else { ?>
+                                <span><?= /* @noEscape */
+                                    $customHelper->getPriceHtmlforlist($_product) ?></span>
+                                <?php
+                            } ?>
+                        </div>
+                        <div class="product details product-item-details">
+                            <?php
+                            echo $_soxeshelper->getTopRate($_product, true, true); ?>
+
+                            <?php
+                            $htmlContent = $_soxeshelper->getListratingHtmls($_product);
+                            ?>
+                            <div style="display: none;" class="hiderating ratingdia_html_<?php
+                            echo $_product->getId(); ?>">
+                                <?php
+                                echo $htmlContent['html']; ?>
+                            </div>
+                        </div>
+
+                        <!-- Bio attribute -->
+                        <div class="product details product-item-details product-bio-status">
+                            <?php
+                            if (is_object($bioStatus = $_product->getCustomAttribute('lucullus_bio_dynamic'))) {
+                                if ($bioStatus->getValue() == true):
+                                    ?>
+                                    <img src="<?= $this->getViewFileUrl('images/BIO_icon.jpg'); ?>"
+                                         alt="<?= $_product->getAttributeText('lucullus_bio_dynamic'); ?>"
+                                         width="28"
+                                    />
+                                <?php
+                                endif;
+                            }
+                            ?>
+                        </div>
+
+                        <!-- Cart -->
+                        <div class="product details product-item-details">
+                            <div class="product actions product-item-actions">
+                                <div data-role="add-to-links" class="actions-secondary">
+                                    <a href="#" data-post='<?php
+                                    echo $this->helper(Magento\Wishlist\Helper\Data::class)->getAddParams(
+                                        $_product
+                                    ); ?>' class="action towishlist" data-action="add-to-wishlist">
+                                        <span><?php
+                                            echo $block->escapeHtml(__('Add to Wish List')) ?></span></a>
+                                </div>
+                                <div class="actions-primary">
+                                    <?php
+                                    if (! ($isPrimeur && $_product->getFinalPrice() <= 0)) { ?>
+                                        <?php
+                                        $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form"
+                                              data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
+                                              action="<?= $block->escapeUrl($postParams['action']) ?>"
+                                              method="post">
+                                            <input type="hidden"
+                                                   name="product"
+                                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                            <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                   value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit"
+                                                    title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                    class="action tocart primary">
+                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                            </button>
+                                        </form>
+                                        <?php
+                                    } ?>
+                                </div>
+                                <div class="actions-third primeur" style="overflow: visible !important;">
+                                    <?php if ($isPrimeur) { ?>
+                                        <?php
+                                        $extracollection = $extraoptions->getCollection()
+                                            ->addFieldToFilter('option_id', ['eq' => $_product->getExtra()])
+                                            ->addFieldToFilter(
+                                                [
+                                                    'store_id',
+                                                    'store_id',
+                                                ],
+                                                [
+                                                    [
+                                                        'eq' => $storeId,
+                                                    ],
+                                                    [
+                                                        'eq' => 0,
+                                                    ]
+                                                ]
+                                            )->getData();
+                                        $imglink = '';
+                                        if (is_array($extracollection) && count($extracollection) > 0) {
+                                            $imglink = '<img src="' . $getMediaImageUrl . $extracollection[0]['image'] . '" alt=""/>';
+                                        }
+                                        ?>
+                                        <?php
+                                        if (! $custddata->getCustomer()->getId()) { ?>
+
+                                            <a id="togglePrimeurModal" href="#" primeur="<?php
+                                            echo $_product->getId(); ?>">
+                                                <?php
+                                                echo $imglink; ?>
+                                            </a>
+                                            <?php
+                                        } else { ?>
+                                            <!--call js to send email now -->
+                                            <a id="sendPrimeurEmail" href="#"
+                                               primeur="<?= $_product->getId(); ?>"
+                                               email="<?= $custddata->getCustomer()->getEmail(); ?>"
+                                               name="<?= $custddata->getCustomer()->getName(); ?>"
+                                            >
+                                                <?php
+                                                echo $imglink; ?>
+                                            </a>
+                                            <!--call js to send email now end-->
+                                            <?php
+                                        } ?>
+                                        <?php
+                                    } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+
+    <?= $block->getToolbarHtml(); ?>
+
+    <?php if (! $block->isRedirectToCartEnabled()): ?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= $block->escapeJs($_product->getSku()) ?>"
+                }
+            }
+        }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
+
+<!--
+Primeur wine modal dialog
+-->
+<div class="fullscreen_show"></div>
+<div id="primeurModal" class="primeurModal">
+    <div id="closeModal" class="closeModal">X</div>
+    <input type="hidden" id="primeur_product_id"/>
+    <div>
+        <h3><strong><?php
+                echo __('PLEASE INFORM ME') ?></strong></h3>
+        <p><?php
+            echo __(
+                'As soon as the prices for this article are available please send me via E-Mail an offer without obligation.'
+            ) ?></p>
+        <div class="auth">
+            <div class="login">
+                <h3><strong><?php
+                        echo __('LOGIN FOR EXISTING CUSTOMERS') ?></strong></h3>
+                <p><?php
+                    echo __('Please login here with your E-Mail and password.') ?></p>
+                <a href="<?php
+                echo $this->getUrl('customer/account/login'); ?>" class="button"><?php
+                    echo __('Login') ?></a>
+            </div>
+            <div class="register">
+                <h3><strong><?php
+                        echo __('NEW AT LUCULLUS?') ?></strong></h3>
+                <p><?php
+                    echo __('Please first register here.') ?></p>
+                <a href="<?php
+                echo $this->getUrl('customer/account/create'); ?>" class="button"><?php
+                    echo __('Register') ?></a>
+            </div>
+        </div>
+        <div class="guest">
+            <h4><strong><?php
+                    echo __('REQUEST INFORMATION WITHOUT REGISTRATION') ?></strong></h4>
+            <div class="auth">
+                <form id="sendPrimeurMailForm">
+                    <div class="login">
+                        <?php
+                        echo __('Please enter here your E-Mail address') ?>
+                        <input name="guest_primeur_email" id="guest_primeur_email" type="email" placeholder="<?php
+                        echo __('Email Address') ?>" class="input-text required-entry validate-email"/>
+                        <button type="button" name="send_guest_primeur_email" id="send_guest_primeur_email"
+                                class="button"><?php
+                            echo __('Submit') ?></button>
+                    </div>
+                    <div class="register">
+                        <!-- captcha -->
+                        <div class="input-group">
+                            <input type="hidden" id="error_locale" value="de"/>
+                            <div class="g-recaptcha-error" style="color: red;"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="primeurSuccessModal" class="primeurModal">
+    <div id="closePrimeurSuccessModal" class="closeModal">X</div>
+    <p id="primeur_send_mail_success"><?php
+        echo __(
+            'Many thanks for your interest. We will inform you about prices and availability is as soon as possible.'
+        ); ?></p>
+</div>

@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Store\Block\Switcher $block */
+?>
+<?php if (count($block->getStores())>1) : ?>
+    <?php $id = $block->getIdModifier() ? '-' . $block->getIdModifier() : '' ?>
+
+    <div class="options-language">
+        <?php $lancnt = count($block->getStores()); $i=1; ?>
+        <?php foreach ($block->getStores() as $_lang) : ?>
+            <?php $clsselect = $_lang->getId() == $block->getCurrentStoreId() ? 'selectedlang' : ''; ?>
+            <a <?php /* src="<?php echo $this->getUrl('customization/index/languagechanger') ?>" */ ?>
+                id="<?= strtoupper(substr($block->escapeHtml($_lang->getName()), 0, 2)) ?>"
+                class="language <?= $clsselect ?>"
+                href="<?= $block->escapeUrl($block->getViewModel()->getTargetStoreRedirectUrl($_lang)) ?>"
+                <?php /* data-post='<?= $this->getTargetStorePostData($_lang); ?>' */ ?>
+            >
+                <?= strtoupper(substr($block->escapeHtml($_lang->getName()), 0, 2)) ?>
+            </a>
+            <?php
+            if ($i < $lancnt) {
+                echo ' | ';
+            } $i++;
+            ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

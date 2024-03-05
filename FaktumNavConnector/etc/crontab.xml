@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+
+    <group id="default">
+		<job name="faktum_crontab_order_importer" instance="Immerce\FaktumNavConnector\Cron\OrderImporterCron" method="execute">
+			<schedule>* */6 * * *</schedule>
+		</job>
+	</group>
+    <group id="default">
+        <job name="faktum_crontab_customer_importer" instance="Immerce\FaktumNavConnector\Cron\CustomerImporterCron" method="execute">
+            <schedule>* */6 * * *</schedule>
+        </job>
+    </group>
+    <group id="default">
+        <job name="faktum_crontab_product_importer" instance="Immerce\FaktumNavConnector\Cron\ProductImporterCron" method="execute">
+            <schedule>* */6 * * *</schedule>
+        </job>
+    </group>
+</config>

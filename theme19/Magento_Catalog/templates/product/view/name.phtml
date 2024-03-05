@@ -1,0 +1,24 @@
+<?php
+	$_product = $this->getProduct();
+?>
+
+<div class="product-name-block product-detail-table">
+<div class="product-image <?php echo $this->helper('Luckyduck\Customization\Helper\Data')->getClassName($_product);?>">&nbsp;</div>
+
+<div class="product-table">
+    <div class="column-1 col">
+        <div class="product-name">
+            <?php echo $this->helper('Luckyduck\Customization\Helper\Data')->splitNameByYear($_product->getName()); ?>
+        </div>
+		<?php if( strpos( $this->helper('Luckyduck\Customization\Helper\Data')->getTopRate($_product, true, true ), 'hide-mob' ) === false): ?>
+   			<div class="right">
+				<a id="show_score" class="call-rate"><?php echo __('Score'); ?></a>
+				<div><?php echo $this->helper('Luckyduck\Customization\Helper\Data')->getTopRate($_product, true, true ); ?></div>
+			</div>
+	
+		<?php endif; ?>
+		
+		
+    </div>
+</div>
+</div>

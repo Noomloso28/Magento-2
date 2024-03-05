@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<mapping>
+    <fields scope="base">
+        <field name="product_number" type="text">sku</field>
+        <field name="product_details" type="text">description</field>
+    </fields>
+<!--    <fields scope="english">-->
+<!--        <field name="product_number" type="text">sku</field>-->
+<!--        <field name="product_details" type="text">description</field>-->
+<!--    </fields>-->
+</mapping>

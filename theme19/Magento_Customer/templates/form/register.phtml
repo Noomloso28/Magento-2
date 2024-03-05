@@ -1,0 +1,156 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Form\Register $block */
+
+?>
+
+<?= $block->getChildHtml('form_fields_before') ?>
+<?php /* Extensions placeholder */ ?>
+<?= $block->getChildHtml('customer.form.register.extra') ?>
+<form class="form create account form-create-account" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
+    <?= /* @noEscape */ $block->getBlockHtml('formkey'); ?>
+    <div class="fieldset create info col1-left">
+        <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
+        <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+		<div class="field required">
+            <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email Address')) ?></span></label>
+            <div class="control">
+                <input type="email" name="email" autocomplete="email" id="email_address" value="<?= $block->escapeHtmlAttr($block->getFormData()->getEmail()) ?>" title="<?= $block->escapeHtmlAttr(__('Email Address')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+        
+
+        <?php $_dob = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Dob::class) ?>
+        <?php if ($_dob->isEnabled()) : ?>
+            <?= $_dob->setDate($block->getFormData()->getDob())->toHtml() ?>
+        <?php endif ?>
+
+        <?php $_taxvat = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Taxvat::class) ?>
+        <?php if ($_taxvat->isEnabled()) : ?>
+            <?= $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
+        <?php endif ?>
+
+        <?php $_gender = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Gender::class) ?>
+        <?php if ($_gender->isEnabled()) : ?>
+            <?= $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+        <?php endif ?>
+    </div>
+    
+    <div class="fieldset create account col2-right">
+        
+        <div class="field password required">
+            <label for="password" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+            <div class="control">
+                <input type="password" name="password" id="password"
+                       title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
+                       class="input-text"
+                       data-password-min-length="<?= $block->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>"
+                       data-password-min-character-sets="<?= $block->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>"
+                       data-validate="{required:true, 'validate-customer-password':true}"
+                       autocomplete="off">
+                <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
+                    <div id="password-strength-meter" class="password-strength-meter">
+                        <?= $block->escapeHtml(__('Password Strength')) ?>:
+                        <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                            <?= $block->escapeHtml(__('No Password')) ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="field confirmation required">
+            <label for="password-confirmation" class="label"><span><?= $block->escapeHtml(__('Confirm Password')) ?></span></label>
+            <div class="control">
+                <input type="password" name="password_confirmation" title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="off">
+            </div>
+        </div>
+        <?= $block->getChildHtml('form_additional_info') ?>
+		<?php if ($block->isNewsletterEnabled()) : ?>
+            <div class="field choice newsletter">
+                <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed"<?php if ($block->getFormData()->getIsSubscribed()) : ?> checked="checked"<?php endif; ?> class="checkbox">
+                <label for="is_subscribed" class="label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
+            </div>
+            <?php /* Extensions placeholder */ ?>
+            <?= $block->getChildHtml('customer.form.register.newsletter') ?>
+        <?php endif ?>
+		
+		<div class="field choice adult">
+			<input type="checkbox" name="is_adult" title="<?= $block->escapeHtmlAttr(__("I confirm that I'm over 18 years old")) ?>" value="1" id="is_adult"<?php if ($block->getFormData()->getIsAdult()) : ?> checked="checked"<?php endif; ?> class="checkbox" data-validate="{required:true}">
+			 <label for="is_adult" class="label"><span><?= $block->escapeHtml(__("I confirm that I'm over 18 years old")) ?></span></label>
+		</div>
+		
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?= $block->escapeHtmlAttr(__('Create an Account')) ?>"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></button>
+        </div>
+        <div class="secondary">
+            <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
+        </div>
+    </div>
+</form>
+<script>
+require([
+    'jquery',
+    'mage/mage'
+], function($){
+
+    var dataForm = $('#form-validate');
+    var ignore = <?= /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null' ?>;
+
+    dataForm.mage('validation', {
+    <?php if ($_dob->isEnabled()) : ?>
+        errorPlacement: function(error, element) {
+            if (element.prop('id').search('full') !== -1) {
+                var dobElement = $(element).parents('.customer-dob'),
+                    errorClass = error.prop('class');
+                error.insertAfter(element.parent());
+                dobElement.find('.validate-custom').addClass(errorClass)
+                    .after('<div class="' + errorClass + '"></div>');
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        ignore: ':hidden:not(' + ignore + ')'
+    <?php else : ?>
+        ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+    <?php endif ?>
+    }).find('input:text').attr('autocomplete', 'off');
+
+});
+</script>
+<?php if ($block->getShowAddressFields()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#country": {
+            "regionUpdater": {
+                "optionalRegionAllowed": <?= /* @noEscape */ $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "regionJson": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
+                "defaultRegion": "<?= (int) $block->getFormData()->getRegionId() ?>",
+                "countriesWithOptionalZip": <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getCountriesWithOptionalZip(true) ?>
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        }
+    }
+</script>

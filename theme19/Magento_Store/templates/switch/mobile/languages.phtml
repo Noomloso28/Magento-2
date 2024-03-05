@@ -1,0 +1,24 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Store\Block\Switcher $block */
+
+$_helper = $this->helper('Luckyduck\Customization\Helper\Miscellaneous');
+
+?>
+<?php if (count($block->getStores())>1) : ?>
+    <?php $id = $block->getIdModifier() ? '-' . $block->getIdModifier() : '' ?>
+    
+    <div class="options-language">
+		<select name="select-language" id="" onchange="window.location.href = this.value">
+	    	<?php $lancnt = count($block->getStores()); $i=1; ?>
+	    	<?php foreach ($block->getStores() as $_lang) : ?>
+				<option value="<?php echo $_helper->storeredirectUrl($_lang); ?>" <?php if ($_lang->getId() == $block->getCurrentStoreId()){ echo 'selected="true"'; } ?>><?= strtoupper(substr($block->escapeHtml($_lang->getName()),0,2)) ?></option>
+	    		<?php //if($i<$lancnt){echo " | ";} $i++; ?>
+	    	<?php endforeach; ?>
+		</select>
+	</div>
+<?php endif; ?>

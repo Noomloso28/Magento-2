@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alr:test-suite xmlns:alr="urn:model.allure.qatools.yandex.ru" start="1667190448374" stop="1667190448383" version="1.4.0">
+  <name>Immerce\FaktumNavConnector\Importer\OrderImporterTest</name>
+  <test-cases>
+    <test-case start="1667190448375" stop="1667190448383" status="broken">
+      <name>testIsValid</name>
+      <failure>
+        <message>Call to a member function getAbsolutePath() on null</message>
+        <stack-trace>#0 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/Framework/TestCase.php(772): PHPUnit\Framework\TestResult-&gt;run()
+#1 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/Framework/TestSuite.php(639): PHPUnit\Framework\TestCase-&gt;run()
+#2 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/Framework/TestSuite.php(639): PHPUnit\Framework\TestSuite-&gt;run()
+#3 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(653): PHPUnit\Framework\TestSuite-&gt;run()
+#4 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/TextUI/Command.php(108): PHPUnit\TextUI\TestRunner-&gt;run()
+#5 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/src/TextUI/Command.php(68): PHPUnit\TextUI\Command-&gt;run()
+#6 /media/Development/Sites/Clients/faktum-shop.de/vendor/phpunit/phpunit/phpunit(61): PHPUnit\TextUI\Command::main()
+#7 {main}</stack-trace>
+      </failure>
+    </test-case>
+  </test-cases>
+</alr:test-suite>

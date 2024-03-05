@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <!--head>
+    	<script src="js/iframeResizer.min.js"/>
+    </head>
+    <body>
+    	<referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="home.iframe" as="home.iframe.cms" template="Magento_Cms::iframe.phtml" after="-" />
+		</referenceContainer>
+		<referenceBlock name="page.main.title" remove="true" />
+    </body-->
+</page>

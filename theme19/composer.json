@@ -1,0 +1,19 @@
+{
+    "name": "lucullus/theme19",
+    "description": "N/A",
+    "require": {
+        "php": ">=7.4",
+        "magento/theme-frontend-luma": "*",
+        "magento/framework": "*"
+    },
+    "type": "magento2-theme",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    }
+}

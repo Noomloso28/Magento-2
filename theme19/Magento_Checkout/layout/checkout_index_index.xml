@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+    	<!--<referenceContainer name="page.wrapper">
+			<container name="custom.logo.container" htmlTag="div" htmlClass="custom-logo-container" before="-"/>
+		</referenceContainer>-->
+
+
+		<!--Add Header START-->
+		<!--referenceContainer name="header.container">
+			<container name="header.panel.container" label="Panel Header Container" htmlTag="div" htmlClass="panel-header-container" before="-">
+				<container name="header.panel.container.parent" label="Panel Header Container parent" htmlTag="div" htmlClass="panel-header-container-parent">
+					<container name="header.panel.container.left" label="Panel Header Container Left" htmlTag="div" htmlClass="panel-header-container-left">
+						<block class="Magento\Cms\Block\Block" name="otherlinks">
+						    <arguments>
+						        <argument name="block_id" xsi:type="string">second_navigation</argument>
+						    </arguments>
+						</block>
+					</container>
+					<container name="header.panel.container.taxchanger" label="Panel Header Container taxchanger" htmlTag="div" htmlClass="panel-header-container-taxchanger">
+						<block class="Luckyduck\Customization\Block\Taxchanger" name="taxchanger" template="Magento_Theme::html/taxchanger.phtml" />
+					</container>
+				</container>
+			</container>
+		</referenceContainer-->
+    	<!--referenceContainer name="header.panel">
+			<block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+
+
+			<container name="logo.account.container" label="logo account Container" htmlTag="div" htmlClass="logo-account-cart-container">
+				<container name="custom.logo.container" label="custom logo container" htmlTag="div" htmlClass="custom-logo-container">
+				</container>
+				<container name="custom.account.search.wrapper" label="custom account search wrapper" htmlTag="div" htmlClass="custom-account-search-wrapper">
+					<container name="custom.account.container" label="custom account container" htmlTag="div" htmlClass="custom-account-container">
+						<block class="Magento\Framework\View\Element\Template" name="custom.account" template="Magento_Theme::html/custom_account.phtml" before="minicart" />
+					</container>
+					<container name="custom.search.container" label="custom search container" htmlTag="div" htmlClass="custom-search-container">
+					</container>
+				</container>
+			</container>
+
+			<container name="menu.container" label="menu Container" htmlTag="div" htmlClass="menu-container">
+				<block class="Magento\Cms\Block\Block" name="custnav">
+				    <arguments>
+				        <argument name="block_id" xsi:type="string">custom_header</argument>
+				    </arguments>
+				</block>
+			</container>
+
+			<container name="custom.container.mobile" label="Custom Container mobile" htmlTag="div" htmlClass="header-container-mobile">
+				<container name="headeroptions.container.top" label="headeroptions Container top" htmlTag="div" htmlClass="header-top-mobile" before="-">
+					<block class="Luckyduck\Customization\Block\Taxchanger" name="mobile.taxchanger" template="Magento_Theme::html/taxchanger.phtml"  />
+					<block class="Magento\Directory\Block\Currency" name="mobile.currency" template="Magento_Directory::currency.phtml"/>
+					<block class="Magento\Store\Block\Switcher" name="mobile.language" template="Magento_Store::switch/mobile/languages.phtml"/>
+				</container>
+				<container name="headeroptions.container.logo" label="headeroptions Container logo" htmlTag="div" htmlClass="header-logo-mobile" after="headeroptions.container.top">
+					<block class="Magento\Theme\Block\Html\Header\Logo" name="mobile.logo" template="Magento_Theme::html/header/logo_mobile.phtml">
+	                    <arguments>
+	                        <argument name="logo_img_width" xsi:type="number">148</argument>
+	                        <argument name="logo_img_height" xsi:type="number">43</argument>
+	                    </arguments>
+                	</block>
+				</container>
+				<container name="headeroptions.container" label="headeroptions Container" htmlTag="div" htmlClass="header-options"></container>
+
+				<container name="headeroptions.menu.container.header.content" label="headeroptions menu Container header content" htmlTag="div" htmlClass="mobile-header-content">
+					<container name="headeroptions.menu.container.hamburger.mobile" label="headeroptions menu Container hamburger mobile" htmlTag="div" htmlClass="mobile-menu">
+						<block class="Magento\Framework\View\Element\Template" name="mobile.menu.custom" template="Magento_Theme::html/menu.phtml"  />
+					</container>
+
+					<container name="headeroptions.menu.container.mobile" label="headeroptions menu Container mobile" htmlTag="div" htmlClass="mobile-search">
+						<block class="Magento\Framework\View\Element\Template" name="mobile.search.custom" template="Magento_Theme::html/mobilemenu.phtml"  />
+					</container>
+					<container name="headeroptions.menu.container.account.mobile" label="headeroptions menu Container account mobile" htmlTag="div" htmlClass="mobile-account">
+						<block class="Magento\Framework\View\Element\Template" name="custom.account.mobile" template="Magento_Theme::html/custom_account.phtml"  />
+					</container>
+				</container>
+
+				<container name="mobile.menu.details" label="mobile menu details" htmlTag="div" htmlClass="mobile-menu-details">
+					<block class="Magento\Cms\Block\Block" name="mobilemenudetails">
+					    <arguments>
+					        <argument name="block_id" xsi:type="string">mobile_navigation</argument>
+					    </arguments>
+					</block>
+					<container name="mobile.search.details" label="mobile search details" htmlTag="div" htmlClass="mobile-search-details">
+						<block class="Magento\Framework\View\Element\Template" name="mobile.top.search" as="mobile.topSearch" template="Magento_Search::form.mini.mobile.phtml" />
+					</container>
+					<container name="mobile.account.details" label="mobile account details" htmlTag="div" htmlClass="mobile-account-details">
+						<block class="Magento\Framework\View\Element\Template" name="mobile.account.links" template="Magento_Theme::html/custom_account_links.phtml"  />
+					</container>
+
+				</container>
+
+
+			</container>
+		</referenceContainer-->
+		<!--move element="currency" destination="header.panel.container.parent" after="header.panel.container.left" />
+		<move element="store_language" destination="header.panel.container.parent" after="header.panel.container.taxchanger"/>
+		<move element="logo" destination="custom.logo.container" />
+		<move element="top.links" destination="custom.account.container" before="-" />
+		<move element="minicart" destination="custom.account.container" after="-" />
+		<move element="top.search" destination="custom.search.container" />
+		<move element="copyright" destination="footer"/>
+
+
+		<referenceBlock name="breadcrumbs" remove="true" />
+		<referenceBlock name="report.bugs" remove="true"/>
+        <referenceBlock name="header.links" remove="true"/>
+        <referenceBlock name="form.subscribe" remove="true" />
+        <referenceBlock name="navigation.sections" remove="true" />
+		<referenceBlock name="advanced-search-link" remove="true"/>
+		<referenceBlock name="footer_links" remove="true"/>
+		<referenceBlock name="my-account-link" remove="true" />
+		<referenceBlock name="authorization-link" remove="true" />
+		<referenceBlock name="header-wrapper" remove="true" /-->
+
+		<!--Add Header END-->
+
+
+
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="shippingAdditional" xsi:type="array">
+                                                            <item name="component" xsi:type="string">uiComponent</item>
+                                                            <item name="displayArea" xsi:type="string">shippingAdditional</item>
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="shippingInfomation" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Immerce_ShippingMessage/js/view/shipping-info</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+
+
+
+		<!--referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="shippingAddress" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+
+                                                        <item name="shipping-address-fieldset" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+
+                                                                <item name="region_id" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                    <item name="config" xsi:type="array">
+				                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+				                                                    </item>
+                                                                </item>
+                                                                <item name="postcode" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">113</item>
+                                                                </item>
+                                                                <item name="city" xsi:type="array">
+                                                                    <item name="sortOrder" xsi:type="string">114</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock-->
+
+
+
+
+		<!--<move element="logo" destination="custom.logo.container" before="-"   />-->
+
+    	<!--<referenceContainer name="header.container" remove="true"/>
+    	<referenceContainer name="header.panel" remove="true"/>-->
+        <!--referenceContainer name="footer-container" remove="false"/-->
+    </body>
+</page>

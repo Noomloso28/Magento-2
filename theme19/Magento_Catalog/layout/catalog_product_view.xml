@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+       	<referenceContainer name="product.info.main">
+			<block class="Magento\Catalog\Block\Product\View" name="product.info.article.group" template="Magento_Catalog::product/view/article_group.phtml" before="product.info.price" />	
+        </referenceContainer>
+
+        <!--<referenceContainer name="product.info.price">
+			<block class="Magento\Catalog\Block\Product\View" name="product.info.stock.qty.left" template="Magento_Catalog::product/view/qty_left.phtml" after="product.info.stock.sku" />	
+        </referenceContainer>-->
+        
+
+        <move element="product.info.stock.sku" destination="product.info.price" before="-"/>
+        <!-- <move element="product.info" destination="product.info.price" after="product.info.stock.qty.left"/> -->
+
+        <referenceBlock name="product.info.details" remove="true" />
+        <referenceBlock name="view.addto.compare" remove="true"/> 
+        <referenceContainer name="page.main.title" remove="true"/> 
+        <referenceContainer name="view.addto.wishlist" remove="true"/> 
+        <referenceContainer name="product.info.price" remove="true"/> 
+		
+		<referenceContainer name="product.info.main">
+			<container name="product.name.container" label="product name container" htmlTag="div" htmlClass="product-name-container" before="-">
+				<block class="Magento\Catalog\Block\Product\View" name="custom.product.name.block" template="Magento_Catalog::product/view/name.phtml" before="-" />
+			</container>
+				
+        </referenceContainer>
+		<referenceContainer name="content">
+				<block class="Magento\Catalog\Block\Product\View"  name="product-extra-icons-block" template="Magento_Catalog::product/rate.phtml" before="product.info.details" />
+			
+		</referenceContainer>
+		
+    </body>
+</page>

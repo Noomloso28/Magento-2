@@ -1,0 +1,175 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2020 Amasty (https://www.amasty.com)
+ * @package Amasty_Mostviewed
+ */
+?>
+<?php
+/**
+ * @var \Amasty\Mostviewed\Block\Widget\Related $block
+ * @codingStandardsIgnoreFile
+ */
+?>
+<?php if ($block->getProductCollection() && $block->getProductCollection()->getSize()) : ?>
+    <?php
+    $type = 'widget-product-grid';
+
+    $mode = 'grid';
+
+    $image = 'related_products_content';
+    $items = $block->getProductCollection()->getItems();
+
+    $isSlider = $block->getBlockLayout();
+    $tagWrap = $isSlider ? 'div' : 'ol';
+    $tag = $isSlider ? 'div' : 'li';
+
+    $showWishlist = false;
+    $showCompare = false;
+    $showCart = $block->getAddToCart();
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    $description = false;
+    ?>
+
+    <div class="block <?= /* @noEscape */ $block->getCssClass() ?> amrelated-grid-wrapper block-products-list <?= /* @noEscape */ $mode ?>"
+         id="amrelated-block-<?= (int)$block->getGroupId();?>"
+    >
+        <?php if ($block->getTitle()) : ?>
+            <div class="block-title">
+                <strong><?= $block->escapeHtml(__($block->getTitle())) ?></strong>
+            </div>
+        <?php endif; ?>
+        <div class="block-content">
+            <div class="products-<?= /* @noEscape */ $mode ?> <?= /* @noEscape */ $mode ?>">
+                <<?= /* @noEscape */ $tagWrap?> class="product-items <?= /* @noEscape */ $type ?>" <?= /* @noEscape */ $isSlider ? 'data-amrelated-js="slider"' : ''?>>
+                    <?php $iterator = 1; ?>
+                    <?php foreach ($items as $item) : ?>
+                        <?= /* @noEscape */ ($iterator++ == 1) ? '' : '</' . $tag . '>' ?><<?= /* @noEscape */ $tag?> class="product-item">
+
+                        <div class="product-item-info">
+                            <a href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>" class="product-item-photo">
+                                <?= /* @noEscape */ $block->getImage($item, $image)->toHtml() ?>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a title="<?= $block->escapeHtml($item->getName()) ?>"
+                                       href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>"
+                                       class="product-item-link">
+                                        <?= $block->escapeHtml($item->getName()) ?>
+                                    </a>
+                                </strong>
+                                <?php if ($templateType) : ?>
+                                    <?= /* @noEscape */ $block->getReviewsSummaryHtml($item, $templateType) ?>
+                                <?php endif; ?>
+                                
+                                <?php
+                                    $customHelper = $this->helper('Luckyduck\Customization\Helper\Miscellaneous');
+                                ?>
+                                <div class="price-box"><span class="price"><?= /* @noEscape */ $customHelper->getcurrentCurrencyCode().' '.$customHelper->getPriceHtml($item) ?></span></div>
+
+                                <?= $block->getBrandLogoHtml($item) ?>
+                                <?php if ($showWishlist || $showCompare || $showCart) : ?>
+                                    <div class="product-item-actions">
+                                        <?php if ($showCart) : ?>
+                                            <div class="actions-primary">
+                                                <?php if ($item->isSaleable()) : ?>
+                                                    <?php if ($item->getTypeInstance()->hasRequiredOptions($item)) : ?>
+                                                        <button class="action tocart primary" data-mage-init='{"redirectUrl":{"url":"<?= $block->escapeUrl($block->getAddToCartUrl($item)) ?>"}}' type="button" title="<?= $block->escapeHtml(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                        </button>
+                                                    <?php else : ?>
+                                                        <?php
+                                                        $postDataHelper = $this->helper(\Magento\Framework\Data\Helper\PostHelper::class);
+                                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($item), ['product' => $item->getEntityId()])
+                                                        ?>
+                                                        <button class="action tocart primary" data-post='<?= /* @noEscape */ $postData ?>' type="button" title="<?= $block->escapeHtml(__('Add to Cart')) ?>">
+                                                            <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                <?php else : ?>
+                                                    <?php if ($item->getIsSalable()) : ?>
+                                                        <div class="stock available">
+                                                            <span><?= $block->escapeHtml(__('In stock')) ?></span>
+                                                        </div>
+                                                    <?php else : ?>
+                                                        <div class="stock unavailable">
+                                                            <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($showWishlist || $showCompare) : ?>
+                                            <div class="actions-secondary" data-role="add-to-links">
+                                                <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) : ?>
+                                                    <a href="#"
+                                                       data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($item) ?>'
+                                                       class="action towishlist"
+                                                       data-action="add-to-wishlist"
+                                                       title="<?= $block->escapeHtml(__('Add to Wish List')) ?>">
+                                                        <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <?php if ($block->getAddToCompareUrl() && $showCompare) : ?>
+                                                    <?php $compareHelper = $this->helper(\Magento\Catalog\Helper\Product\Compare::class);?>
+                                                    <a href="#" class="action tocompare"
+                                                       data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($item) ?>'
+                                                       title="<?= $block->escapeHtml(__('Add to Compare')) ?>">
+                                                        <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <?= /* @noEscape */ ($iterator == count($items)+1) ? '</' . $tag . '>' : '' ?>
+
+                    <?php endforeach ?>
+                </<?= /* @noEscape */ $tagWrap?>>
+            </div>
+        </div>
+    </div>
+    <?php if ($isSlider) : ?>
+        <script type="text/javascript">
+            require([
+                "jquery",
+                "Amasty_Base/vendor/slick/slick.min"
+            ], function ($) {
+                $('#amrelated-block-<?= /* @noEscape */ (int)$block->getGroupId();?> [data-amrelated-js="slider"]').slick(
+                    {
+                        dots:false,
+                        infinite: true,
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
+                        responsive: [
+                            {
+                                breakpoint: 1280,
+                                settings: {
+                                    slidesToShow: 3,
+                                    slidesToScroll: 3
+                                }
+                            },
+                            {
+                                breakpoint: 992,
+                                settings: {
+                                    slidesToShow: 2,
+                                    slidesToScroll: 2
+                                }
+                            },
+                            {
+                                breakpoint: 425,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            }
+                        ]
+                    }
+                );
+            });
+        </script>
+    <?php endif; ?>
+<?php endif;?>

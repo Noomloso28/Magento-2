@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Immerce\FaktumNavConnector\Importer\ImportDataLoader\ImportDataLoaderInterface" type="Immerce\FaktumNavConnector\Importer\ImportDataLoader\ImportXmlFileLoader" />
+    <preference for="Immerce\FaktumNavConnector\FieldMapper\FieldMapperInterface" type="Immerce\FaktumNavConnector\FieldMapper\FieldMapper" />
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ProductAttributeGenerator" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\ProductAttributeGenerator</item>
+                <item name="CustomerAttributeGenerator" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\CustomerAttributeGenerator</item>
+                <item name="ProductImportProcessor" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\ProductImportProcessor</item>
+                <item name="CustomerImportProcessor" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\CustomerImportProcessor</item>
+                <item name="OrderImportProcessor" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\OrderImportProcessor</item>
+                <item name="OrderAttributeGenerator" xsi:type="object">Immerce\FaktumNavConnector\Console\Command\OrderAttributeGenerator</item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>

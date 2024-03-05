@@ -1,0 +1,74 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+
+// phpcs:disable Magento2.Security.IncludeFile.FoundIncludeFile
+// phpcs:disable PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currencyCode = $currencysymbol->getStore()->getCurrentCurrencyCode();
+$wysiwygUrl = $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl();
+$pdfIcon = $wysiwygUrl."custimage/pdf-download-icon.png";
+$xlsIcon = $wysiwygUrl."custimage/xls-download-icon.png";
+
+$pdfurl = $this->getUrl("customization/index/pdf");
+$excelurl = $this->getUrl("customization/index/excel");
+?>
+<?php if ($block->getCollection()->getSize()) :?>
+    <div class="toolbar toolbar-products" data-mage-init='<?= /* @noEscape */ $block->getWidgetOptionsJson() ?>'>
+        <?php if ($block->isExpanded()) :?>
+            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+        <?php endif; ?>
+
+        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+
+        <?= $block->getPagerHtml() ?>
+
+        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+
+        <?php if ($block->isExpanded()) :?>
+            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+            
+            
+            
+            
+            <div class="download-items">
+		        <div class="total-items"><span>&nbsp;</span></div>
+		        <div class="pdf-download"><a style="cursor: pointer;" class="pdfurls" data-href="<?php echo $pdfurl; ?>" ><img class="pdfdownload" src="<?php echo $pdfIcon; ?>" alt="<?php echo __('Download pdf'); ?>" /></a></div>
+		        <div class="xls-download"><a style="cursor: pointer;" class="excelurls" data-href="<?php echo $excelurl; ?>" ><img class="exceldownload" src="<?php echo $xlsIcon; ?>" alt="<?php echo __('Download xls'); ?>" /></a></div>
+		    </div>
+		    
+		    
+		    
+                        
+        <?php endif; ?>
+        
+        <div style="clear: both;">&nbsp;</div>
+		<div class="cataloglisting">
+			<ol class="cataloglisting-ol">
+		        <li class="cataloglisting-li">
+		            <div class="cataloglisting-div" >
+		                <div class=""><?php echo __('Name') ?></div>
+		                <div class=""><?php echo __('Region') ?></div>
+		                <div class=""><?php echo __('Vintage') ?></div>
+		                <div class=""><?php echo __('Size') ?></div>
+		                <div class=""><?php echo __('Stock') ?></div>
+		                <div class=""><?php echo __('Price/bt.').$currencyCode; ?></div>
+						<div class=""><?php echo __('Rating') ?></div>
+		                <div class="">&nbsp;</div>
+		            </div>
+		        </li>
+		    </ol>
+		</div>
+        
+    </div>
+<?php endif ?>

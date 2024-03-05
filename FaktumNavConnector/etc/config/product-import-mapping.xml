@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<mapping>
+    <fields scope="base">
+        <field name="faktum_eigenschaften" type="text">custom_block</field>
+        <field name="faktum_hoehe" type="text">attribute56</field>
+        <field name="faktum_innenmass" type="text">attribute99</field>
+        <field name="faktum_einbaumass" type="text">attribute86</field>
+        <field name="faktum_trittflaeche" type="text">attribute92</field>
+        <field name="faktum_bewegung" type="text">attribute81</field>
+        <field name="faktum_hoehenverstellbar" type="text">attribute83</field>
+        <field name="faktum_l_nge" type="text">attribute56</field>
+        <field name="faktum_schnittl_nge" type="text">attribute99</field>
+        <field name="faktum_schneidrad" type="text">attribute86</field>
+        <field name="faktum_seitenauflage" type="text">attribute92</field>
+        <field name="faktum_easy_view" type="text">attribute81</field>
+        <field name="faktum_hinweis" type="text">attribute56</field>
+        <field name="faktum_durchmesser" type="text">attribute56</field>
+    </fields>
+</mapping>

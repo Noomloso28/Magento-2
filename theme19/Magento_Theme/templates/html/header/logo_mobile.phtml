@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Theme\Block\Html\Header\Logo $block
+ */
+$storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();
+
+$language = '';
+if(isset($_COOKIE['wp-wpml_current_language'])){
+	$language = strtolower(substr($_COOKIE['wp-wpml_current_language'],0,2));
+	if($language == 'de'){
+		$language = '';
+	}
+}
+?>
+<a
+    class="logo"
+    href="/"
+    title="<?= $block->escapeHtmlAttr($storeName) ?>"
+    aria-label="store logo">
+    <img src="<?= $block->escapeUrl($block->getLogoSrc()) ?>"
+         title="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+         alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+            <?= $block->getLogoWidth() ? 'width="' . $block->escapeHtmlAttr($block->getLogoWidth()) . '"' : '' ?>
+            <?= $block->getLogoHeight() ? 'height="' . $block->escapeHtmlAttr($block->getLogoHeight()) . '"' : '' ?>
+    />
+</a>

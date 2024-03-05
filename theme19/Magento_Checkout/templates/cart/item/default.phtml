@@ -1,0 +1,155 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Magento2.Files.LineLength.MaxExceeded
+
+/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+
+$_item = $block->getItem();
+$product = $_item->getProduct();
+
+
+$currentStock = $product->getExtensionAttributes()->getStockItem()->getQty();
+$packageType = $product->getAttributeText('capacity_in_cl');
+$availableqty = $this->helper('Luckyduck\Customization\Helper\Data')->getAvailableOrderQty($currentStock,$packageType);
+
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+/** @var \Magento\Msrp\Helper\Data $helper */
+$helper = $this->helper(Magento\Msrp\Helper\Data::class);
+$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+?>
+<tbody class="cart item">
+    <tr class="item-info">
+        <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="col item">
+            <?php if ($block->hasProductUrl()) :?>
+                <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
+                   title=""
+                   tabindex="-1"
+                   class="product-item-photo">
+            <?php else :?>
+                <span class="product-item-photo">
+            <?php endif;?>
+            	<span class="product-image <?php echo $this->helper('Luckyduck\Customization\Helper\Data')->getClassName($product);?>">&nbsp;</span>
+            <?php if ($block->hasProductUrl()) :?>
+                </a>
+            <?php else :?>
+                </span>
+            <?php endif; ?>
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()) :?>
+                        <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"><?= $this->helper('Luckyduck\Customization\Helper\Data')->splitNameByYear($block->escapeHtml($block->getProductName())) ?></a>
+                    <?php else :?>
+                        <?= $block->escapeHtml($block->getProductName()) ?>
+                    <?php endif; ?>
+                </strong>
+                <?php if ($_options = $block->getOptionList()) :?>
+                    <dl class="item-options">
+                        <?php foreach ($_options as $_option) :?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                            <dd>
+                                <?php if (isset($_formatedOptionValue['full_view'])) :?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['full_view']) ?>
+                                <?php else :?>
+                                    <?= $block->escapeHtml($_formatedOptionValue['value'], ['span']) ?>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif;?>
+                <?php if ($messages = $block->getMessages()) :?>
+                    <?php foreach ($messages as $message) :?>
+                        <div class= "cart item message <?= $block->escapeHtmlAttr($message['type']) ?>">
+                            <div><?= $block->escapeHtml($message['text']) ?></div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock) :?>
+                    <?= $addInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif;?>
+            </div>
+        </td>
+		<td class="col year"><span class="label"><?= $block->escapeHtml(__('Vintage')) ?></span><?php echo $product->getAttributeText('year'); ?></td>
+		<td class="col capacity">
+			<span class="label"><?= $block->escapeHtml(__('Size')) ?></span>
+			<?php 
+				echo $product->getAttributeText('capacity_in_cl'); 
+				if($product->getAttributeText('capacity_in_cl') != ''){
+					echo ' '.__('cl');
+				}
+			?>
+		</td>
+		<td class="col sku"><span class="label"><?= $block->escapeHtml(__('Art.Nr.')) ?></span><?php echo $_item->getSku(); ?></td>
+		<td class="col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
+            <div class="field qty">
+                <div class="control qty">
+                    <label for="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty">
+                        <span class="label"><?= $block->escapeHtml(__('Qty')) ?></span>
+                        
+							   
+						<select id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
+                               name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+                               data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getSku()) ?>" class="cart-qty">
+							   
+							<?php foreach($availableqty as $key => $value): ?>
+									<option value="<?php echo $key; ?>" <?php if($block->escapeHtmlAttr($block->getQty()) == $key){ echo 'selected="true"'; } ?>>
+										<?php echo $value; ?>
+									</option>
+							<?php endforeach; ?>
+						</select>
+                    </label>
+                </div>
+            </div>
+        </td>
+
+        <?php if ($canApplyMsrp) :?>
+            <td class="col msrp" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+                <span class="pricing msrp">
+                    <span class="msrp notice"><?= $block->escapeHtml(__('See price before order confirmation.')) ?></span>
+                    <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
+                    <a href="#" class="action help map"
+                       id="<?= ($block->escapeHtmlAttr($helpLinkId)) ?>"
+                       data-mage-init='{"addToCart":{
+                                            "helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>",
+                                            "productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>",
+                                            "showAddToCart": false
+                                            }
+                                        }'
+                    >
+                        <span><?= $block->escapeHtml(__("What's this?")) ?></span>
+                    </a>
+                </span>
+            </td>
+        <?php else :?>
+            <td class="col price" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+                <?php //echo $block->getUnitPriceHtml($_item) ?>
+				<?php
+					echo $this->helper('Luckyduck\Customization\Helper\Miscellaneous')->getcurrencyWithoutsymbol($_item->getCalculationPrice());
+				
+				?>
+            </td>
+        <?php endif; ?>
+        
+
+        <td class="col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
+            <?php if ($canApplyMsrp) :?>
+                <span class="cart msrp subtotal">--</span>
+            <?php else :?>
+                <?php //echo $block->getRowTotalHtml($_item) ?>
+				<?php
+					echo $this->helper('Luckyduck\Customization\Helper\Miscellaneous')->getcurrencyWithoutsymbol($_item->getRowTotal());
+				
+				?>
+            <?php endif; ?>
+        </td>
+		<td>
+			<?php echo $block->getLayout()->createBlock('Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove')->setItem($_item)->setTemplate('Magento_Checkout::cart/item/renderer/actions/remove.phtml')->toHtml();?>
+		</td>
+    </tr>
+</tbody>

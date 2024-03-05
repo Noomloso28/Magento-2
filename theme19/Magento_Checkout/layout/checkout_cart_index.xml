@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_cart_item_renderers"/>
+    <body>
+        <referenceBlock name="taxchanger" remove="true" />
+        <referenceBlock name="mobile.taxchanger" remove="true" />
+        <!--<referenceBlock name="checkout.cart.coupon" remove="true" />-->
+		<move element="checkout.cart.form" destination="checkout.cart.container" before="-"   />
+
+<!--		<referenceBlock name="checkout.cart.shipping">-->
+<!--		    <arguments>-->
+<!--		        <argument name="jsLayout" xsi:type="array">-->
+<!--		            <item name="components" xsi:type="array">-->
+<!--		                <item name="block-summary" xsi:type="array">-->
+<!--		                    &lt;!&ndash; My custom part: &ndash;&gt;-->
+<!--		                    <item name="config" xsi:type="array">-->
+<!--		                        <item name="componentDisabled" xsi:type="boolean">true</item>-->
+<!--		                    </item>-->
+
+<!--		                </item>-->
+<!--		            </item>-->
+<!--		        </argument>-->
+<!--		    </arguments>-->
+<!--		</referenceBlock>-->
+
+		<referenceContainer name="checkout.cart.items">
+			<container name="cart.bottom.text" label="cart bottom text" htmlTag="div" htmlClass="cart-info-text">
+				<block class="Magento\Framework\View\Element\Template" name="cart-text-info" after="-" template="Magento_Checkout::text.phtml" />
+			</container>
+		</referenceContainer>
+
+    </body>
+</page>

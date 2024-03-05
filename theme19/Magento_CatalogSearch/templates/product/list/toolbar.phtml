@@ -1,0 +1,85 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+
+// phpcs:disable Magento2.Security.IncludeFile.FoundIncludeFile
+// phpcs:disable PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+$currencyCode = $currencysymbol->getStore()->getCurrentCurrencyCode();
+$wysiwygUrl = $this->helper('\Magento\Cms\Helper\Wysiwyg\Images')->getBaseUrl();
+$pdfIcon = $wysiwygUrl."custimage/pdf-download-icon.png";
+$xlsIcon = $wysiwygUrl."custimage/xls-download-icon.png";
+
+$tollbarhelper = $this->helper('Luckyduck\Customization\Helper\Toolbar');
+
+?>
+
+<?php
+
+/*
+ * Noom added parameter after excel url. 11.11.2021
+ */
+
+$urlParams = null;
+$objectManager_Request = \Magento\Framework\App\ObjectManager::getInstance();
+$RequestInterface = $objectManager_Request->get('Magento\Framework\App\RequestInterface');
+
+if( $getParams = $RequestInterface->getParams() ){
+    $urlParams = http_build_query( $getParams );
+}
+
+
+$excelurl = $this->getUrl("customization/index/excel?".$urlParams);//category=$categoryId
+$pdfurl = $this->getUrl("customization/index/pdf?".$urlParams);//category=$categoryId
+
+?>
+
+
+<?php if ($block->getCollection()->getSize()) :?>
+    <div class="toolbar toolbar-products" data-mage-init='<?= /* @noEscape */ $block->getWidgetOptionsJson() ?>'>
+        <?php if ($block->isExpanded()) :?>
+            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+        <?php endif; ?>
+
+        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+
+        <?= $block->getPagerHtml() ?>
+
+        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+
+        <div class="cust-toolbar-wrapper">
+            <?php if ($block->isExpanded()) :?>
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+
+                <div class="download-main">
+                    <div class="sortfilter">
+                        <?php /*<div class="top-filter-heading">
+	                	<?php echo __('Filter By') ?>:
+	                </div>*/ ?>
+                    </div>
+                    <div class="download-items">
+                        <div class="total-items"><span>&nbsp;</span></div>
+                        <div class="pdf-download"><a style="cursor: pointer;" class="pdfurls" data-href="<?php echo $pdfurl; ?>" ><img class="pdfdownload" src="<?php echo $pdfIcon; ?>" alt="<?php echo __('Download pdf'); ?>" /></a></div>
+                        <div class="xls-download"><a style="cursor: pointer;" class="excelurls" data-href="<?php echo $excelurl; ?>" ><img class="exceldownload" src="<?php echo $xlsIcon; ?>" alt="<?php echo __('Download xls'); ?>" /></a></div>
+                    </div>
+                </div>
+
+            <?php endif; ?>
+        </div>
+
+
+    </div>
+<?php endif ?>
+<style>
+    .sortbylink a{cursor: pointer;text-decoration: underline;}
+</style>

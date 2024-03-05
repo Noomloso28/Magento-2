@@ -1,0 +1,27 @@
+<?php
+
+namespace Immerce\FaktumNavConnector\Importer;
+
+use PHPUnit\Framework\TestCase;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+
+class OrderImporterTest extends TestCase
+{
+    private ObjectManager $_objectManager;
+    private $orderImport;
+
+    public function setUp(): void
+    {
+        $this->_objectManager = new ObjectManager($this);
+        $this->orderImport = $this->_objectManager->getObject('Immerce\FaktumNavConnector\Importer\OrderImporter');
+    }
+
+    public function testIsValid(){
+        $array = [
+            'status' => 1
+        ];
+        $type = 'string';
+
+
+    }
+}

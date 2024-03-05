@@ -1,0 +1,94 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var $block \Magento\Weee\Block\Item\Price\Renderer */
+
+$item = $block->getItem();
+
+// ensure we use the zone for the shopping cart / minicart
+$originalZone = $block->getZone();
+$block->setZone(\Magento\Framework\Pricing\Render::ZONE_CART);
+$customHelper = $this->helper('Luckyduck\Customization\Helper\Miscellaneous');
+?>
+
+<?php if ($block->displayPriceInclTax() || $block->displayBothPrices()) : ?>
+    <span class="price-including-tax" data-label="<?= $block->escapeHtmlAttr(__('Incl. Tax')) ?>">
+    <?php if ($block->displayPriceWithWeeeDetails()) : ?>
+        <span class="minicart-tax-total">
+    <?php else : ?>
+        <span class="minicart-price">
+    <?php endif; ?>
+
+            <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($block->getUnitDisplayPriceInclTax());?></span>
+
+        </span>
+
+    <?php if ($block->displayPriceWithWeeeDetails()) : ?>
+        <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($item)) : ?>
+            <span class="minicart-tax-info">
+            <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($item) as $tax) : ?>
+                <span class="weee" data-label="<?= $block->escapeHtmlAttr($tax['title']) ?>">
+
+                    <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($tax['amount_incl_tax']);?></span>
+
+                </span>
+            <?php endforeach; ?>
+            </span>
+
+            <?php if ($block->displayFinalPrice()) : ?>
+                <span class="minicart-tax-total">
+                    <span class="weee" data-label="<?= $block->escapeHtmlAttr(__('Total Incl. Tax')) ?>">
+
+                        <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($block->getFinalUnitDisplayPriceInclTax());?></span>
+
+                    </span>
+                </span>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    </span>
+<?php endif; ?>
+
+<?php if ($block->displayPriceExclTax() || $block->displayBothPrices()) : ?>
+    <span class="price-excluding-tax" data-label="<?= $block->escapeHtmlAttr(__('Excl. Tax')) ?>">
+    <?php if ($block->displayPriceWithWeeeDetails()) : ?>
+        <span class="minicart-tax-total">
+    <?php else : ?>
+        <span class="minicart-price">
+    <?php endif; ?>       
+        
+        <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($block->getUnitDisplayPriceExclTax());?></span>
+
+        </span>
+
+    <?php if ($block->displayPriceWithWeeeDetails()) : ?>
+        <?php if ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($item)) : ?>
+            <span class="minicart-tax-info">
+            <?php foreach ($this->helper(\Magento\Weee\Helper\Data::class)->getApplied($item) as $tax) : ?>
+                <span class="weee" data-label="<?= $block->escapeHtmlAttr($tax['title']) ?>">
+
+                    <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($tax['amount']);?></span>
+
+                </span>
+            <?php endforeach; ?>
+            </span>
+
+            <?php if ($block->displayFinalPrice()) : ?>
+                <span class="minicart-tax-total">
+                    <span class="weee" data-label="<?= $block->escapeHtmlAttr(__('Total')) ?>">
+                        
+                        <span class="price"><?php echo $customHelper->getSymbol().' '.$customHelper->getcurrencyWithoutsymbol($block->getFinalUnitDisplayPriceExclTax());?></span>
+
+                    </span>
+                </span>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+    </span>
+<?php endif; ?>
+<?php $block->setZone($originalZone); ?>

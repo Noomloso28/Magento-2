@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <move element="customer-account-navigation-orders-link" destination="customer_account_navigation" after="customer-account-navigation-address-link" />
+        <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-product-reviews-link" remove="true"/>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" ifconfig="newsletter/general/active" name="customer-account-navigation-newsletter-subscriptions-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">newsletter/manage</argument>
+                    <argument name="label" xsi:type="string" translate="true">Newsletter</argument>
+                    <argument name="sortOrder" xsi:type="number">40</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

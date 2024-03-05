@@ -1,0 +1,18 @@
+<?php
+//
+?>
+
+<!--iframe id="lucullus-home" style="width: 1px; min-width: 100%;" src="http://lucullus.jbstaging.de/cms/home/" scrolling="no" frameborder="0"></iframe-->
+
+<script type="text/javascript">
+require(["jquery","domReady!"], function ($) {
+	  iFrameResize({ log: true,heightCalculationMethod: 'bodyScroll',autoResize: true }, '#lucullus-home');
+});
+</script>
+
+<style>
+    @media(max-width: 1024px){
+        #animate-menu-pricelist{ top: 115px; }
+        #sidecontent-pricelist{ margin-top: 115px; }
+    }
+</style>

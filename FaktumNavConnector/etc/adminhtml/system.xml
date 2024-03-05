@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="immerce" sortOrder="99" translate="label">
+            <label>IMMERCE</label>
+        </tab>
+        <section id="navconnector" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>FAKTUM NAV Connector</label>
+            <tab>immerce</tab>
+            <resource>Immerce_FaktumNavConnector::configuration</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1" translate="label">
+                <label>General</label>
+                <field id="product_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1"
+                       translate="label" type="text">
+                    <label>Product Xml path (../var)</label>
+                </field>
+                <field id="customer_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="2"
+                       translate="label" type="text">
+                    <label>Customer Xml path (../var)</label>
+                </field>
+                <field id="order_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="3"
+                       translate="label" type="text">
+                    <label>Order Xml path (../var)</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

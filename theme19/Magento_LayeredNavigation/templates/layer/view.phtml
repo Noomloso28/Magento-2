@@ -1,0 +1,149 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @var $block \Magento\LayeredNavigation\Block\Navigation
+ */
+?>
+
+<?php if ($block->canShowBlock()) : ?>
+    <div class="block filter" id="layered-filter-block" data-mage-init='
+    {
+        "collapsible":
+        {
+            "openedState": "active",
+            "collapsible": true,
+            "active": false,
+            "collateral":
+            {
+                "openedState": "filter-active",
+                "element": "body"
+            }
+        }
+    }'>
+        <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>
+        <div class="block-title filter-title" data-count="<?= /* @noEscape */ $filtered ?>">
+            <strong data-role="title"><?= $block->escapeHtml(__('Filter')); ?></strong>
+        </div>
+        <span class="filter-title-cust"><?= $block->escapeHtml(__('Filter')); ?></span>
+        <div class="block-content filter-content">
+
+
+
+            <?php $wrapOptions = false; ?>
+            <?php foreach ($block->getFilters() as $filter) : ?>
+                <?php if ($filter->getItemsCount()) : ?>
+                    <?php if (!$wrapOptions) : ?>
+                        <strong role="heading" aria-level="2" class="block-subtitle filter-subtitle"><?= $block->escapeHtml(__('Shopping Options')) ?></strong>
+                        <div class="filter-options" id="narrow-by-list" data-role="content" data-mage-init='
+                        {
+                            "accordion":
+                            {
+                                "openedState": "active",
+                                "collapsible": true,
+                                "active": false,
+                                "multipleCollapsible": false
+                            }
+                        }'>
+                        <?php $wrapOptions = true;
+                        endif; ?>
+
+                            <?php // noom add class name for custom filter css
+                                $class_name_filter = preg_replace('/[^A-Za-z0-9\-]/', '', $filter->getName() );
+                            ?>
+
+                    <div data-role="collapsible" class="filter-options-item <?php echo $class_name_filter; ?>">
+                    	<?php
+                    		if($filter->getName()=='Kategorie'
+                    			|| $filter->getName()=='Category'
+                    			|| $filter->getName()=='Categories')
+                    		{
+                    				$optionnameis = __('Country/Region');
+                    		}else{
+                    			$optionnameis = $filter->getName();
+                    		}
+                    	?>
+                        <div data-role="title" class="filter-options-title"><?= $block->escapeHtml(__($optionnameis)) ?></div>
+                        <div data-role="content" class="filter-options-content"><?= /* @noEscape */ $block->getChildBlock('renderer')->render($filter) ?></div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <?php if ($wrapOptions) : ?>
+                </div>
+            <?php else : ?>
+                <script>
+                    require([
+                        'jquery'
+                    ], function ($) {
+                        $('#layered-filter-block').addClass('filter-no-options');
+                    });
+                </script>
+            <?php endif; ?>
+
+            <?= $block->getChildHtml('state') ?>
+             <?php if ($block->getLayer()->getState()->getFilters()) : ?>
+                <a href="<?= $block->escapeUrl($block->getClearUrl()) ?>" class="action clear filter-clear">
+                <div class="block-actions filter-actions">
+
+                        <span><?= $block->escapeHtml(__('Clear All')) ?></span>
+
+                </div>
+                </a>
+            <?php endif; ?>
+        </div>
+
+        <!--// JBCOMMERCE CHANGE START-->
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$currencysymbol = $objectManager->get('Magento\Store\Model\StoreManagerInterface');
+
+$currencyCode = $currencysymbol->getStore()->getCurrentCurrencyCode();
+?>
+<!--Top heading navigation start here-->
+<div class="cataloglisting">
+	<ol class="cataloglisting-ol">
+        <li class="cataloglisting-li">
+            <div class="cataloglisting-div sortbylink" >
+                <div class="">
+                	<?php echo __('Name') ?>
+                </div>
+                <div class="">
+                	<?php echo __('Vintage') ?>
+                </div>
+                <div class="">
+                	<?php echo __('Size') ?>
+                </div>
+                <div class="">
+                	<?php echo __('Stock') ?>
+                </div>
+                <div class="">
+                	<?php echo __('Region') ?>
+                </div>
+                <div class="">
+					<?php echo __('Price/bt.').$currencyCode; ?>
+                </div>
+				<div class="">
+					<?php echo __('Rating') ?>
+				</div>
+                <div class="">
+                    <?php echo __('Bio') ?>
+                </div>
+                <div class="">&nbsp;</div>
+            </div>
+        </li>
+    </ol>
+</div>
+<!--Top heading navigation end here-->
+<!--// JBCOMMERCE CHANGE END-->
+
+
+
+
+    </div>
+<?php endif; ?>

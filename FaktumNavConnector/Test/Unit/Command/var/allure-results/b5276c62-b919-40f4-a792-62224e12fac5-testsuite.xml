@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alr:test-suite xmlns:alr="urn:model.allure.qatools.yandex.ru" start="1667181436984" stop="1667181436997" version="1.4.0">
+  <name>Immerce\FaktumNavConnector\Console\Command\OrderImportProcessorTest</name>
+  <test-cases>
+    <test-case start="1667181436986" stop="1667181436997" status="passed">
+      <name>Warning</name>
+    </test-case>
+  </test-cases>
+</alr:test-suite>

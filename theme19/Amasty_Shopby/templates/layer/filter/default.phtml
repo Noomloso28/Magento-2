@@ -1,0 +1,82 @@
+<?php
+/** @var \Amasty\ShopbyBase\Model\FilterSetting $filterSetting */
+/** @var \Amasty\Shopby\Block\Navigation\FilterRenderer $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$filterUniqId = $escaper->escapeHtml(uniqid());
+$filterCode = $escaper->escapeHtml($filterSetting->getAttributeCode());
+?>
+
+<?php if ($filterSetting->isShowSearchBox(count($filterItems))): ?>
+    <?= /* @noEscape */ $block->getSearchForm(); ?>
+<?php endif; ?>
+
+<form class="am-ranges"
+      data-am-js="ranges"
+      data-amshopby-filter="<?= $escaper->escapeHtmlAttr($filterCode);?>"
+      data-amshopby-filter-request-var="<?= $escaper->escapeHtmlAttr($block->getFilter()->getRequestVar()); ?>"
+      autocomplete="off">
+    <ol class="items am-filter-items-<?= /* @noEscape */ $filterCode;?>
+        <?= /* @noEscape */ $block->getEnableOverflowScroll($filterSetting) > 0 ? '-am-overflow' : '' ?>
+        <?= /* @noEscape */ $block->isMultiselect($filterSetting) ? '-am-multiselect' : '-am-singleselect' ?>"
+        <?php if ($block->getEnableOverflowScroll($filterSetting) > 0): ?>
+            style="max-height:<?= $escaper->escapeHtml($block->getOverflowScrollValue($filterSetting)) ?>px;"
+        <?php endif; ?>>
+        <?php /** @var \Amasty\Shopby\Model\Layer\Filter\Item $filterItem */?>
+        <?php foreach ($filterItems as $filterItem): ?>
+            <?php $optionLabel = $filterItem->getOptionLabel(); ?>
+            <?php $inputType = !$block->isMultiselect($filterSetting) ||
+            in_array($filterCode, ['rating', 'stock']) ? 'radio' : 'checkbox'?>
+        <li class="item <?= (!$filterItem->getCount()) ? '-empty-value' : '' ?>"
+            data-label="<?= /* @noEscape */ trim(preg_replace('/\s+/', ' ', $block->stripTags($optionLabel))) . ($filterCode == 'rating' ? __(' star(s)') : ''); ?>">
+            <?php if ($filterItem->getCount() >= 0): ?>
+                <?php $style = ($inputType == 'radio' && !$block->getRadioAllowed())
+                    || in_array($filterCode, ['rating', 'stock']) ? 'display: none;' : ''; ?>
+                <input
+                        name="amshopby[<?= /* @noEscape */ $block->getFilter()->getRequestVar();?>][]"
+                        value="<?= $escaper->escapeHtmlAttr($filterItem->getValueString());?>"
+                        type="<?= /* @noEscape */ $inputType;?>"
+                        style="<?= /* @noEscape */ $style ?>"
+                    <?= /* @noEscape */ $block->checkedFilter($filterItem) ? ' checked' : ''; ?>
+                />
+                <input
+                        id="checkbox-<?php echo $block->escapeHtml($filterItem->getValueString()); ?>"
+                        name="amshopby[<?= /* @noEscape */ $block->getFilter()->getRequestVar();?>][]"
+                        value="<?= $block->escapeHtml($filterItem->getValueString());?>"
+                        type="<?= /* @noEscape */ $inputType;?>"
+                        style="<?= /* @noEscape */ $style ?>"
+                    <?= /* @noEscape */ $block->checkedFilter($filterItem) ? ' checked' : ''; ?>
+                />
+                <label for="checkbox-<?php echo $block->escapeHtml($filterItem->getValueString()); ?>" ></label>
+                
+                <a
+                    class="am-filter-item-<?= /* @noEscape */ $escaper->escapeHtmlAttr(uniqid())?>"
+                    data-am-js="filter-item-default"
+                    href="<?= $escaper->escapeUrl($filterItem->getUrl()) ?>"
+                    <?= /* @noEscape */ $filterSetting->isAddNofollow() ? ' rel="nofollow"' : '' ?>
+                >
+
+                    <span class="label"><?= /* @noEscape */ $optionLabel;?></span>
+                    <?php if ($block->isShowProductQuantities($filterSetting->getShowProductQuantities())): ?>
+                        <span class="count"><?= /* @noEscape */ $filterItem->getCount(); ?><span class="filter-count-label">
+                                <?php $title = ($filterItem->getCount() == 1) ? __('item') : __('items');?><?= /* @noEscape */ $escaper->escapeHtml($title) ?></span></span>
+                    <?php endif; ?>
+                </a>
+                <?php if ($inputType == 'checkbox'): ?>
+                    <span class="amshopby-choice" style="display: none;"></span>
+                <?php endif; ?>
+            <?php else: ?>
+                <span class="label"><?= /* @noEscape */ $optionLabel;?></span>
+                <?php if ($block->isShowProductQuantities($filterSetting->getShowProductQuantities())): ?>
+                    <span class="count"><?= /* @noEscape */ $filterItem->getCount(); ?><span class="filter-count-label">
+                            <?php $title = ($filterItem->getCount() == 1) ? __('item') : __('items');?><?= $escaper->escapeHtml($title) ?></span></span>
+                <?php endif; ?>
+            <?php endif; ?>
+            </li>
+        <?php endforeach ?>
+    </ol>
+</form>
+
+<?php if ($filterSetting->getAddFromToWidget() && isset($fromToConfig) && is_array($fromToConfig)): ?>
+    <?= /* @noEscape */ $block->getFromToWidget('default') ?>
+<?php endif;?>

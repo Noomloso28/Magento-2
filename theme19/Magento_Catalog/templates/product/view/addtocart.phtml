@@ -1,0 +1,92 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php 
+	$_product = $block->getProduct(); 
+	$currentStock = $_product->getExtensionAttributes()->getStockItem()->getQty();
+	$packageType = $_product->getAttributeText('capacity_in_cl');
+	$availableqty = $this->helper('Luckyduck\Customization\Helper\Data')->getAvailableOrderQty($currentStock,$packageType);
+	
+	$isExtra = $_product->getExtra();
+    $extra = $_product->getResource()->getAttribute('extra')->getFrontend()->getValue($_product);
+?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()) :?>
+<div class="box-tocart">
+    <div class="fieldset">
+		<div class="sku-wrapper add-to-cart-attr">
+			<span class="attr-title"><strong><?php echo __('Art. Nr.') ?></strong></span>
+			<span class="attr-value"><?php echo $_product->getSku(); ?></span>
+		</div>
+		<div class="available-qty-wrapper add-to-cart-attr">
+			<span class="attr-title"><strong><?php echo __('Available quantity') ?></strong></span>
+			<span class="attr-value"><?php //echo $currentStock; ?><?php echo ($isExtra) ? $extra : $currentStock; ?></span>
+		</div>
+        <?php if ($block->shouldRenderQuantity()) :?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?= $block->escapeHtml(__('Amount')) ?></span></label>
+            <div class="control">
+				<select name="qty" id="qty" class="custom-dropdown">
+					<?php foreach($availableqty as $key => $value): ?>
+							<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+					<?php endforeach; ?>
+			        
+			    </select>	   
+            </div>
+        </div>
+        <?php endif; ?>
+		<div class="custom-product-price">
+			<span class="attr-title"><strong><?php echo __('Price/bt.') ?></strong></span>
+			<?php if(!($isExtra && strpos(strtoupper($extra), 'PRIMEUR') !== false && $_product->getFinalPrice() <= 0)){ ?>
+			<span class="attr-value">
+				<?php echo $this->helper('Luckyduck\Customization\Helper\Miscellaneous')->getPriceHtml($_product);  ?>
+			</span>
+			<?php }else{ ?>
+			<span class="attr-value" style="display: block">
+                <?php echo __('primeur_price'); ?>
+            </span>
+			<?php } ?>
+			<p>
+				<?php 
+				if($_product->getFinalPrice() > 0){
+					if($this->helper('Luckyduck\Customization\Helper\Data')->getcustomersession()->getIncludeTax() ==1){
+						echo __('incl. 7.7% VAT');
+					}else{
+						echo __('excl. 7.7% VAT');
+					}
+				}
+				?>
+			</p>
+		</div>
+    </div>
+	<div class="custom-button-set">
+		<?php 
+			echo $this->getLayout()
+					  ->createBlock('Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist')
+					  ->setTemplate('Magento_Wishlist::catalog/product/view/addto/wishlist.phtml')
+					  ->toHtml();
+		?>
+		<div class="actions">
+	        <button type="submit"
+	                title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+	                class="action primary tocart"
+	                id="product-addtocart-button" disabled>
+	            <span><?= $block->escapeHtml($buttonTitle) ?></span>
+	        </button>
+	        <?= $block->getChildHtml('', true) ?>
+	    </div>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>

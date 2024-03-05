@@ -1,0 +1,16 @@
+<div class="customLink">			
+	<div class="accountLink">
+		<a href="javascript:void(0);" id="header_account" title="<?= $block->escapeHtml(__('My Account')) ?>"><span class="custom-label"><?= $block->escapeHtml(__('Account')) ?></span></a>
+	</div>
+	<div class="navigation" id="header_account_sub" style="display: none;">
+		<?php 
+			echo $this->getLayout()
+					->createBlock('Magento\Framework\View\Element\Template')
+					->setTemplate('Magento_Theme::html/custom_account_links.phtml')
+					->toHtml();
+
+		
+		?>
+	</div>
+</div>
+

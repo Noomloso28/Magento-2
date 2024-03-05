@@ -1,0 +1,15 @@
+<?php
+$block->getdisablecache();
+$_soxeshelper = $this->helper('Luckyduck\Customization\Helper\Data');
+$language = $_soxeshelper->getCurrentLocalCode();
+
+?>
+
+
+<?php if ($block->getIsIncludeTax() == 1): ?>
+        <a class="taxSwitcher tax-active" href = "<?php  echo $this->getUrl("customization/index/taxchanger",['_query'=>['exclude'=>1]]); ?>"><?php echo __('incl. VAT')?></a> |
+		<a class="taxSwitcher" href = "<?php  echo $this->getUrl("customization/index/taxchanger",['_query'=>['exclude'=>0]]); ?>"><?php echo __('excl. VAT')?></a>
+<?php else: ?>
+        <a class="taxSwitcher" href = "<?php  echo $this->getUrl("customization/index/taxchanger",['_query'=>['exclude'=>1]]); ?>"><?php echo __('incl. VAT')?></a> |
+		<a class="taxSwitcher tax-active" href = "<?php  echo $this->getUrl("customization/index/taxchanger",['_query'=>['exclude'=>0]]); ?>"><?php echo __('excl. VAT')?></a>
+<?php  endif; ?>

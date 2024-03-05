@@ -1,0 +1,868 @@
+<?php
+/**
+ * Product importer.
+ *
+ * @package Immerce\FaktumNavConnector\Importer
+ * @version 1.0.0
+ * @license GPL 2.0+
+ */
+
+declare(strict_types=1);
+
+namespace Immerce\FaktumNavConnector\Importer;
+
+use Immerce\FaktumNavConnector\FieldMapper\FieldMapperInterface;
+use Immerce\FaktumNavConnector\Model\AttributeData;
+use Immerce\FaktumNavConnector\ValueParser\Factory\ValueParserFactory;
+use Magento\Catalog\Api\Data\ProductLinkInterface;
+use Magento\Catalog\Model\Category;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Eav\Model\Config as EavConfig;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Module\Dir\Reader as ModuleDirReader;
+use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Store\Api\WebsiteRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Catalog\Model\ResourceModel\Product\Gallery;
+use Magento\Catalog\Model\Product\Url;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\Catalog\Api\Data\ProductTierPriceInterfaceFactory;
+use Magedelight\Customerprice\Model\CustomerpriceFactory;
+use Magento\Customer\Model\CustomerFactory;
+use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\CategoryLinkRepository;
+use Magento\Framework\Validator\EmailAddress;
+use Psr\Log\LoggerInterface;
+/**
+ * Product importer class.
+ *
+ * @package Immerce\FaktumNavConnector\Importer
+ * @since   1.0.0
+ */
+class ProductImporter extends AbstractImporter
+{
+    CONST IMAGE_DIRECTORY =  'nav-connector/import/products/';
+    CONST CATEGORY_LEVEL_LIMIT = 4;
+
+    /**
+     * @var ValueParserFactory
+     */
+    private ValueParserFactory $valueParserFactory;
+
+    /**
+     * @var EavConfig
+     */
+    private EavConfig $eavConfig;
+
+    /**
+     * @var Product
+     */
+    private Product $product;
+
+    /**
+     * @var ProductFactory
+     */
+    private ProductFactory $productFactory;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
+
+    /**
+     * @var Gallery
+     */
+    private Gallery $gallery;
+
+    /**
+     * @var Url
+     */
+    private Url $url;
+    /**
+     * @var CollectionFactory
+     */
+    private CollectionFactory $collectionFactory;
+
+    /**
+     * @var \Magento\Catalog\Api\ProductRepositoryInterface
+     */
+    private \Magento\Catalog\Api\ProductRepositoryInterface $_productRepository;
+
+    /**
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
+     */
+    private \Magento\Framework\Api\SearchCriteriaBuilder $_searchCriteriaBuilder;
+
+    /**
+     * @var ProductTierPriceInterface
+     */
+    private ProductTierPriceInterfaceFactory $productTierPrice;
+
+    /**
+     * @var CustomerpriceFactory
+     */
+    private CustomerpriceFactory $customerPriceFactory;
+
+    /**
+     * @var CustomerFactory
+     */
+    private CustomerFactory $customerFactory;
+
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * @var WebsiteRepositoryInterface
+     */
+    private WebsiteRepositoryInterface $websiteRepository;
+
+    /**
+     * @var StoreRepositoryInterface
+     */
+    private StoreRepositoryInterface $storeRepository;
+
+    /**
+     * @var CategoryFactory
+     */
+    private CategoryFactory $categoryFactory;
+
+    /**
+     * @var CategoryLinkRepository
+     */
+    private CategoryLinkRepository $categoryLinkRepository;
+    /**
+     * @var EmailAddress
+     */
+    private EmailAddress $emailAddress;
+
+
+    public function __construct(
+        FieldMapperInterface $fieldMapper,
+        ValueParserFactory $valueParserFactory,
+        EavConfig $eavConfig,
+        ModuleDirReader $moduleDirReader,
+        AttributeData $attributeData,
+        DirectoryList $directoryList,
+        Filesystem $filesystem,
+        Product $product,
+        ProductFactory $productFactory,
+        StoreManagerInterface $storeManager,
+        Gallery $gallery,
+        Url $url,
+        CollectionFactory $collectionFactory,
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        ProductTierPriceInterfaceFactory $productTierPrice,
+        CustomerpriceFactory $customerpriceFactory,
+        CustomerFactory $customerFactory,
+        LoggerInterface $logger,
+        WebsiteRepositoryInterface $websiteRepository,
+        StoreRepositoryInterface $storeRepository,
+        CategoryFactory $categoryFactory,
+        CategoryLinkRepository $categoryLinkRepository,
+        EmailAddress $emailAddress
+    ) {
+        parent::__construct($fieldMapper, $moduleDirReader, $attributeData, $directoryList, $filesystem);
+
+        $this->fieldMapper->loadDefinition('product');
+        $this->attributeData->load('product');
+        $this->valueParserFactory = $valueParserFactory;
+        $this->eavConfig = $eavConfig;
+        $this->product = $product;
+        $this->productFactory = $productFactory;
+        $this->storeManager = $storeManager;
+        $this->gallery = $gallery;
+        $this->url = $url;
+        $this->collectionFactory = $collectionFactory;
+
+        $this->_productRepository = $productRepository;
+        $this->_searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->productTierPrice = $productTierPrice;
+        $this->customerPriceFactory = $customerpriceFactory;
+        $this->customerFactory = $customerFactory;
+        $this->logger = $logger;
+        $this->websiteRepository = $websiteRepository;
+        $this->storeRepository = $storeRepository;
+        $this->categoryFactory = $categoryFactory;
+        $this->categoryLinkRepository = $categoryLinkRepository;
+        $this->emailAddress = $emailAddress;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function import(array $data): bool
+    {
+        $this->data = $data;
+        $i = 1;
+        $count = count($data);
+        $websiteId = (int) $this->websiteRepository->get('base')->getId();
+        $storeId = (int) $this->storeRepository->get('default')->getId();
+
+        while ($this->nextItem()) {
+
+            $loadProduct = $this->getProductBySku($this->currentItem['sku']);
+            $exitId = null;
+            $product = null;
+
+            /** check exit product */
+            if (is_object($loadProduct)) {
+                $exitId = $loadProduct->getId();
+                $product = $this->product->load($exitId);
+                $this->logger->debug("Updating product id : ($exitId) ...");
+            } else {
+                $product = $this->productFactory->create();
+                $this->logger->debug("Creating new product...");
+            }
+
+            if ($product instanceof Product) {
+                // Import product base data...
+//                $storeId = $this->storeManager->getStore()->getId(); //can't use in CLI command mode.
+//                $websiteId = $this->storeManager->getWebsite()->getId(); //can't use in CLI command mode.
+                $attributeSetId = $this->productFactory->create()->getDefaultAttributeSetId();
+
+                $product->setStoreId($storeId);
+                $product->setSku($this->currentItem['sku']);
+                $product->setWebsiteIds([$websiteId]);
+                $product->setAttributeSetId($attributeSetId);
+                $product->setVisibility(Visibility::VISIBILITY_BOTH);
+                $product->setCreatedAt(strtotime('now'));
+                $product->setStatus(Status::STATUS_ENABLED);
+                /** set weight */
+                if($this->isValid($this->currentItem,'weight','number')){
+                    $product->setWeight($this->currentItem['weight']);
+                }
+                /** set product type */
+                if($this->isValid($this->currentItem,'product_type','string')){
+                    $product->setTypeId($this->currentItem['product_type']);
+                }
+
+                if (is_numeric($exitId)) {
+                    /** Update Product action... */
+                    !isset($this->currentItem['name']) ?: $product->addAttributeUpdate('Name', $this->currentItem['name'], $storeId);
+                    !isset($this->currentItem['description']) ?: $product->addAttributeUpdate('description', $this->currentItem['description'], $storeId);
+                    !isset($this->currentItem['short_description']) ?: $product->addAttributeUpdate('short_description', $this->currentItem['short_description'], $storeId);
+                } else {
+                    /** Add new Product action ...*/
+                    !isset($this->currentItem['name']) ?: $product->setName($this->currentItem['name']);
+                    !isset($this->currentItem['description']) ?: $product->setDescription($this->currentItem['description']);
+                    !isset($this->currentItem['short_description']) ?: $product->setShortDescription($this->currentItem['short_description']);
+                    /** set product url */
+                    $product->setUrlKey($this->slugify($this->currentItem['name']." ".$this->currentItem['sku']));
+                    /** set dummy price */
+                    $product->setPrice(0.00);
+                }
+
+                // Import product attributes, if there are any.
+                if ($this->isValid($this->currentItem,'attributes', 'array')) {
+                    $this->currentItem['attributes'] = $this->fieldMapper->map($this->currentItem['attributes']);
+                    $product = $this->importAttributes($product, $this->currentItem['attributes'], $storeId, $exitId);
+                }
+                /** set stock */
+                if ($this->isValid($this->currentItem,'stock', 'array')) {
+                    $product = $this->setStockData($product, $this->currentItem['stock']);
+                }
+
+                /** set images */
+                if ($this->isValid($this->currentItem,'images', 'array')) {
+                    $product = $this->setImagesData($product, $this->currentItem['images']);
+                }
+                /** set categories */
+//                $oldCategoryIds = null;
+                if ($this->isValid($this->currentItem,'categories', 'array')) {
+                    //unlink old categories
+//                    $oldCategoryIds = $product->getCategoryIds();
+                    //set new categories
+                    $product = $this->setCategories($product, $this->currentItem['categories']);
+
+                }
+
+                /** set product links */
+                if ($this->isValid($this->currentItem,'linked_products', 'array')) {
+                    $product = $this->setLinkedProducts($product, $this->currentItem['linked_products']);
+                }
+
+                try {
+                    /** save action */
+                    $product->save();
+
+                }catch (\Exception $e){
+                    $this->logger->debug("The Product (sku : ".$this->currentItem['sku'].") can't save data and has error message (".$e->getMessage().")");
+                    continue;
+                }
+
+
+                /** set price */
+                if ($this->isValid($this->currentItem,'pricing', 'array')) {
+                    $this->setProductPrices((int) $product->getId(), $this->currentItem['pricing']);
+                }
+
+                /** Customer price require product id , we must to save before (in case add new product item.)*/
+                if ($this->isValid($this->currentItem,'pricing', 'array')) {
+                    $this->setCustomerPrices((int) $product->getId(), $this->currentItem['pricing']);
+                }
+
+                /** update category */
+                /** we need save category before change */
+                if ($this->isValid($this->currentItem,'categories', 'array') && is_numeric($exitId)) {
+                    $this->unlinkCategories($this->currentItem['categories'], $product->getSku());
+                }
+
+            }
+            echo $this->progressBar($i, $count) ;
+            $i++;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array $array
+     * @param string $key
+     * @param $type
+     * @return bool
+     */
+    public function isValid(array $array, string $key, $type=null)
+    {
+        $status = false;
+        if (array_key_exists($key, $array)) {
+            $status = true;
+        }
+        /** check type validate */
+        if(isset($type) && $status == true){
+            switch ( $type ) {
+                case 'array':
+                    $status = (is_array($array[$key])) ? true : false;
+                    break;
+                case 'string':
+                    $status = (isset($array[$key])) ? true : false;
+                    break;
+                case 'number':
+                    $status = (is_numeric($array[$key])) ? true : false;
+                    break;
+                case 'bool':
+                    $status = (is_bool($array[$key])) ? true : false;
+                    break;
+                default:
+                    $status = false;
+                    break;
+            }
+        }
+
+        return $status;
+    }
+
+    protected function getProductBySku(string $sku)
+    {
+        $collection = $this->collectionFactory->create();
+        $collection->addAttributeToSelect('*');
+        $collection->addFieldToFilter(Product::SKU, $sku);
+        $collection->setFlag('has_stock_status_filter', false); //get all status.
+
+        if($collection->getSize() > 0){
+            return $collection->getFirstItem();
+        }
+
+        return false;
+    }
+
+    /*private function getProductBySku(string $sku)
+    {
+        return $this->product->loadByAttribute('sku', $sku);
+    }*/
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public function slugify(string $string): string
+    {
+        return $this->url->formatUrlKey($string);
+    }
+
+    protected function importPrices(Product $product, array $prices): Product
+    {
+
+        !isset($prices['special_price']) ?: $product->setSpecialPrice($prices['special_price']);
+        !isset($prices['tax_class_name']) ?: $product->setCustomAttribute('tax_class_name', $prices['tax_class_name']);
+        !isset($prices['special_price_from_date']) ?: $product->setSpecialFromDate($prices['special_price_from_date']);
+        !isset($prices['special_price_to_date']) ?: $product->setSpecialToDate($prices['special_price_to_date']);
+
+        /** set tier prices */
+        $prices['tier_prices'] = $prices['tier_prices'] ?? [];
+        if(array_key_exists('tier_prices', $prices)){
+            $this->setTierPrices($product, $prices['tier_prices']);
+        }
+
+
+        return $product;
+    }
+
+    /**
+     * Set the product tier prices.
+     * @param Product $product
+     * @param array $tierPrices
+     * @return Product
+     */
+    private function setTierPrices(Product $product, array $tierPrices): Product
+    {
+        $_tierPrices = [];
+        if(array_key_exists('tier_price', $tierPrices)){
+
+            /** resolve xml generate array in case only 1 row */
+            $tierPrices['tier_price'] = isset($tierPrices['tier_price']['from_qty']) ? [$tierPrices['tier_price']] : $tierPrices['tier_price'];
+
+            foreach ($tierPrices['tier_price'] as $key => $price)
+            {
+                if(!is_numeric($price['from_qty']) || !is_numeric($price['amount']) || !isset($price['type'])){
+                    continue;
+                }
+
+                $productTierPrice = $this->productTierPrice->create()
+                            ->setQty($price['from_qty'])
+                            ->setValue($price['amount'])
+                            ->setCustomerGroupId( $price['customer_group_id'] ?? \Magento\Customer\Model\Group::CUST_GROUP_ALL );
+                if($price['type'] == 'percent'){
+                    $productTierPrice->getExtensionAttributes()->setPercentageValue($price['amount']);
+                }
+
+                $_tierPrices[] = $productTierPrice;
+            }
+            if(count($_tierPrices) > 0){
+                $product->setTierPrices($_tierPrices);
+            }
+        }
+        return $product;
+    }
+
+    /**
+     * @param int $productId
+     * @param array $prices
+     * @return bool
+     */
+    private function setProductPrices(int $productId, array $prices): bool
+    {
+        $product = $this->productFactory->create()->load($productId);
+        $status = true;
+
+        /**set product price */
+        $price = (float) isset($prices['price']) ? $prices['price'] : 0;
+        try {
+            if (is_numeric($price) && $price > 0) {
+                $product->setPrice($price);
+            }
+
+            /** set pricing attributes */
+            $product = $this->importPrices($product, $prices);
+            /** save action */
+            $product->save();
+
+        }catch (\Exception $e){
+            $this->logger->debug("Set price by product id (".$productId.")  has error message (".$e->getMessage().")");
+            $status = false;
+        }
+
+        return $status;
+    }
+
+    /**
+     * @param int $productId
+     * @param array $customerPrices
+     * @return bool
+     * @throws LocalizedException
+     */
+    private function setCustomerPrices(int $productId, array $customerPrices): bool
+    {
+        $product = $this->productFactory->create()->load($productId);
+        $status = true;
+//        $websiteId = $this->storeManager->getWebsite()->getId();
+        $websiteId = (int) $this->websiteRepository->get('base')->getId();
+        $storeId = (int) $this->storeRepository->get('default')->getId();
+
+
+        $customerPrices = $customerPrices['customer_prices'] ?? [];
+        if(is_array($customerPrices) && array_key_exists('customer_price', $customerPrices)){
+
+            /**Remove old data before save new */
+            $priceList = $this->getCustomerPriceList((int) $productId);
+            if(count($priceList) > 0){
+                $this->deleteCustomerPriceByIds($priceList);
+            }
+            /** resolve xml generate array in case only 1 row */
+            $customerPrices['customer_price'] = isset($customerPrices['customer_price']['email']) ? [$customerPrices['customer_price']] : $customerPrices['customer_price'];
+
+            foreach ($customerPrices['customer_price'] as $key => $price){
+
+                if(!isset($price['email'])){
+                    continue;
+                }
+
+                if(!$this->emailAddress->isValid($price['email']) || !is_numeric($price['from_qty']) || !is_numeric($price['amount'])){
+                    continue;
+                }
+
+                /** set the price by customer email */
+                $priceCustomer = $this->customerPriceFactory->create();
+                /** load customer */
+                $customer = $this->customerFactory->create();
+                $customer->setWebsiteId($websiteId);
+                $customer->setStoreId($storeId);
+                $customer->loadByEmail($price['email']);
+
+                $newPrice = (float) $price['amount'];
+                /** set % price */
+                if(array_key_exists('type', $price) && $price['type'] == 'discount'){
+                    $newPrice = $product->getPrice() - ($product->getPrice() * ($newPrice / 100));
+                }
+                /** set minimum qty is 1 */
+                $qty = ($price['from_qty'] > 0) ? $price['from_qty'] : 1;
+
+                if(is_numeric($customer->getId())){
+                    /** save data proccessing ... */
+                    try {
+                        $priceCustomer->setCustomerId($customer->getId())
+                            ->setCustomerName(trim($customer->getName()))
+                            ->setCustomerEmail(trim($customer->getEmail()))
+                            ->setProductId($product->getId())
+                            ->setProductName($product->getName())
+                            ->setNewPrice($newPrice)
+                            ->setLogPrice((float) $price['amount'])
+                            ->setPrice($product->getPrice())
+                            ->setQty($qty);
+
+                        /**save */
+                        $priceCustomer->save();
+
+                    }catch (\Exception $e){
+                        $this->logger->debug("The customer price for email(".$customer->getEmail().") has error message (".$e->getMessage().")");
+                        $status = false;
+                        continue;
+                    }
+                }
+            }
+        }
+        return $status;
+    }
+
+    /**
+     * @param array $customerPriceIds
+     * @return bool
+     */
+    private function deleteCustomerPriceByIds(array $customerPriceIds) : bool
+    {
+        foreach ($customerPriceIds as $key=> $id){
+            try {
+                $this->customerPriceFactory->create()
+                    ->load($id)
+                    ->delete();
+                $status = true;
+            }catch (\Exception $e){
+                $this->logger->debug($e->getMessage());
+                $status = false;
+            }
+        }
+
+        return $status;
+    }
+    /**
+     * @param int $productId
+     * @return array
+     */
+    private function getCustomerPriceList(int $productId) : array
+    {
+        $priceIds = [];
+        $customerPrices = $this->customerPriceFactory->create()
+            ->getCollection()
+            ->addFieldToSelect('*')->addFieldToFilter('product_id', ['eq' => $productId])
+            ->setOrder('customer_id');
+        $prices = $customerPrices->toArray();
+        if(array_key_exists('items', $prices)){
+            foreach ($prices['items'] as $key => $item){
+                $priceIds[] = $item['customerprice_id'];
+            }
+        }
+        return $priceIds;
+    }
+
+    protected function importAttributes(Product $product, array $attributes, $storeId, $exitId): Product
+    {
+        foreach ($attributes as $code => $value) {
+            $attributeType = $this->attributeData->getAttributeType($code);
+            $value = $this->valueParserFactory->create($attributeType)->parse($value);
+
+            /** check attribute exits */
+            if (!$this->isProductAttributeExists($code)){
+                $this->logger->debug("The attribute code ($code) doesn't exits\n");
+                continue;
+            }
+
+            if (isset($value)) {
+                if (is_numeric($exitId)) {
+                    $product->addAttributeUpdate($code, $value, $storeId); //work only updated product.
+                } else {
+                    $product->setCustomAttribute($code, $value); //work only add product
+                }
+            }
+        }
+        return $product;
+    }
+
+    /**
+     * Returns true if attribute exists and false if it doesn't exist
+     *
+     * @param string $field
+     * @return bool
+     */
+    public function isProductAttributeExists($field)
+    {
+        $attr = $this->eavConfig->getAttribute(Product::ENTITY, $field);
+
+        return ($attr && $attr->getId());
+    }
+
+
+    /**
+     * Sets the stock data for the given product.
+     *
+     * @param array $stock
+     * @param Product $product
+     *
+     * @return Product
+     */
+    protected function setStockData(Product $product, array $stock): Product
+    {
+        $product->setData('stock_data', [
+            'qty' => isset($stock['qty']) ? $stock['qty'] : 0,
+        ]);
+
+        return $product;
+    }
+
+    /**
+     * @param Product $product
+     * @param array $images
+     * @return Product
+     * @throws LocalizedException
+     */
+    protected function setImagesData(Product $product, array $images): Product
+    {
+        /*
+         * Remove image in the system before process.
+         */
+        $gallery = $product->getMediaGalleryImages();
+        if (count($gallery) > 0) {
+            foreach ($gallery as $image) {
+                $this->gallery->deleteGallery($image->getValueId());
+            }
+            $product->setMediaGalleryEntries([]);
+        }
+        /*
+         *  add new import images
+         */
+
+        foreach ($images as $key => $attributes) {
+
+            /** set image in case > 1 */
+            if(array_key_exists(0, $attributes)){
+                return self::setImagesData($product, $attributes);
+            }
+
+            $attributesTypes = $attributes['attribute'];
+            $role = isset($attributesTypes['role']) ? explode(",", $attributesTypes['role']) : null;
+            if (is_array($role)) {
+                $replacement = [
+                    'base' => 'image',
+                    'small' => 'small_image',
+                    'swatch' => 'swatch_image'
+                ];
+                $role = array_map(function ($v) use ($replacement) {
+                    return isset($replacement[$v]) ? $replacement[$v] : $v;
+                }, $role);
+            }
+
+            $hidden = isset($attributesTypes['hidden']) ? $attributesTypes['hidden'] : false;
+            $imageName = isset($attributes['url']) ? $attributes['url'] : $attributes;
+
+//            $imageUrl = $this->filesystem->getDirectoryRead(DirectoryList::VAR_DIR)->getAbsolutePath() . self::IMAGE_DIRECTORY . $imageName;
+            $destinationUrl = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath().'product_images/'.$imageName;
+            if (file_exists($destinationUrl)) {
+                //copy to media folder before add to Gallery , resolve bug cross var'folder and media'folder.
+//                if (!file_exists($destinationUrl)) {
+//                    copy($imageUrl, $destinationUrl);
+//                }
+
+                /** add image action */
+                $product->addImageToMediaGallery($destinationUrl, $role, false, $hidden);
+            }else{
+                $this->logger->debug("The image file ($destinationUrl) not found.");
+            }
+        }
+        return $product;
+    }
+
+    /**
+     * Assign cagtegory ids to the active product.
+     * @param Product $product
+     * @param array $categories
+     * @return Product
+     */
+    protected function setCategories(Product $product, array $categories): Product
+    {
+        $assignIds = $this->getCategoryIdByEntity($categories);
+        /** set category ids to the product. */
+        if(count($assignIds) > 0){
+            try {
+                $product->setCategoryIds($assignIds);
+            }catch (\Throwable $e) {
+                return $product;
+            }
+        }
+
+        return $product;
+    }
+
+    /**
+     * Retrive category ids by attribute 'nav_category_id'
+     * @param array $categories
+     * @return array
+     */
+    private function getCategoryIdByEntity(array $categories) : array
+    {
+        $assignIds = [];
+        if(array_key_exists('category', $categories)){
+            //resovle in case have 1 value
+            $categories['category'] = (is_array($categories['category'])) ? $categories['category'] : [$categories['category']];
+
+            foreach (array_filter($categories['category']) as $key => $attribute) {
+                /** @var Category $category */
+                $category = $this->categoryFactory->create()->loadByAttribute('nav_category_id', $attribute);
+                if($category instanceof Category){
+
+                    $categoryId = $category->getId();
+                    $categoryLevel = $category->getLevel();
+                    /**
+                     * Resolved bug url rewrite too long ... ( > 255 varchar)
+                     */
+                    if($categoryLevel < self::CATEGORY_LEVEL_LIMIT){
+                        $assignIds[] = $categoryId;
+                    }
+                }
+            }
+        }
+        return $assignIds;
+    }
+
+
+    private function unlinkCategories(array $categories, string $sku) : bool
+    {
+        $newCategoryIds = $this->getCategoryIdByEntity($categories);
+        /**  load product again for get all categoryIds */
+        $product = $this->productFactory->create()->loadByAttribute('sku', $sku);
+        $categoryIds = $product->getCategoryIds();
+        /** get removeing category id */
+        $categoryUpdate = array_diff($categoryIds, $newCategoryIds);
+        /** compare get different value */
+        //unlink processing
+        if(count($categoryUpdate) > 0){
+             foreach (array_filter($categoryUpdate) as $key => $categoryId){
+                 try {
+                     /* unlink product by sku */
+                     $this->categoryLinkRepository->deleteByIds($categoryId , $sku);
+                 }catch (\Exception $e) {
+                     return false;
+                 }
+
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param Product $product
+     * @param array $productLinked
+     * @return Product
+     */
+    protected function setLinkedProducts(Product $product, array $productLinked): Product
+    {
+        $productLinks = [];
+        //related product
+        if(isset($productLinked['related_skus'])){
+            $relatedLinks = $this->getProductLinksBySku($product, $productLinked['related_skus'], 'related');
+            $productLinks = array_merge($productLinks, $relatedLinks);
+        }
+        //crosssell product
+        if(isset($productLinked['crosssell_skus'])){
+            $crosssellLinks = $this->getProductLinksBySku($product, $productLinked['crosssell_skus'], 'crosssell');
+            $productLinks = array_merge($productLinks, $crosssellLinks);
+        }
+        //upsell product
+        if(isset($productLinked['upsell_skus'])){
+            $upsellLinks = $this->getProductLinksBySku($product, $productLinked['upsell_skus'], 'upsell');
+            $productLinks = array_merge($productLinks, $upsellLinks);
+        }
+
+        //set links to action product
+        if ($productLinks = array_filter($productLinks)) {
+            $product->setProductLinks($productLinks);
+        }
+
+        return $product;
+    }
+
+
+    /**
+     * @param Product $product
+     * @param string $sku
+     * @param string $linkType //related,crosssell,upsell
+     * @return array
+     */
+    protected function getProductLinksBySku(Product $product, string $sku, string $linkType): array
+    {
+        $linkDataAll = [];
+        $ObjectManager = ObjectManager::getInstance();
+        $skuLinks = explode(",", $sku);
+        $productObject = $ObjectManager->get('Magento\Catalog\Model\Product');
+        foreach ($skuLinks as $skuLink) {
+            $linkedProduct = $productObject->loadByAttribute("sku", $skuLink);
+            if ($linkedProduct) {
+                /** @var  ProductLinkInterface $productLinks */
+                $productLinks = $ObjectManager->create('Magento\Catalog\Api\Data\ProductLinkInterface');
+                $linkData = $productLinks
+                    ->setSku($product->getSku())
+                    ->setLinkedProductSku($skuLink)
+                    ->setLinkType($linkType);
+
+                $linkDataAll[] = $linkData;
+            }
+        }
+
+        return $linkDataAll;
+    }
+
+
+
+    /**
+     * Outputs the progress in the console.
+     *
+     * @param  int $done
+     * @param  int $total
+     * @param  string $info
+     * @param  int $width
+     * @return string
+     */
+    protected function progressBar(int $done, int $total, string $info = '', $width = 50)
+    {
+        $perc = round(($done * 100) / $total);
+        $bar  = (int) round(($width * $perc) / 100);
+        return sprintf("%s%%[%s>%s]%s\r", $perc, str_repeat('=', $bar), str_repeat(' ', $width-$bar), $info);
+    }
+
+}

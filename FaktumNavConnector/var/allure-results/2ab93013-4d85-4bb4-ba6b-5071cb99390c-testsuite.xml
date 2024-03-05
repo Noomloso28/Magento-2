@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alr:test-suite xmlns:alr="urn:model.allure.qatools.yandex.ru" start="1667181054776" stop="1667181054793" version="1.4.0">
+  <name>Immerce\FaktumNavConnector\Test\Unit\FieldMapper\FieldMapperTest</name>
+  <test-cases>
+    <test-case start="1667181054778" stop="1667181054793" status="passed">
+      <name>testCanMapFields</name>
+    </test-case>
+  </test-cases>
+</alr:test-suite>
